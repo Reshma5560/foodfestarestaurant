@@ -6,11 +6,13 @@ class LoginController extends GetxController {
   // Rx<TextEditingController> mobileNumberCon = TextEditingController().obs;
   // RxString mobileError = "".obs;
   // RxBool isMobileValid = false.obs;
-  Rx<TextEditingController> emailCon = TextEditingController(text: kDebugMode ? "priya@omtecweb.com" : "").obs;
+  Rx<TextEditingController> emailCon =
+      TextEditingController(text: kDebugMode ? "italian@gmail.com" : "").obs;
   RxBool emailValidation = false.obs;
   RxString emailError = ''.obs;
 
-  Rx<TextEditingController> passwordCon = TextEditingController(text: kDebugMode ? "12547892" : "").obs;
+  Rx<TextEditingController> passwordCon =
+      TextEditingController(text: kDebugMode ? "12345678" : "").obs;
   RxBool passwordValidation = false.obs;
   RxString passwordError = ''.obs;
 

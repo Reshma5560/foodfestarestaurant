@@ -6,6 +6,10 @@ class AppAssets {
 
   /// ICONS ///
   static String infoProfileIcon = '${iconPath}info_profile_icon.png';
+  
+  static String homeIcon = '${iconPath}ic_home.png';
+  static String categoryIcon = '${iconPath}ic_category.png';
+  static String profileIcon = '${iconPath}ic_profile.png';
 
   /// IMAGES ///
   static String appLogo = '${imagesPath}app_logo.png';

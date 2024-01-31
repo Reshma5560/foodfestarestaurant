@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:foodfestarestaurant/route/app_routes.dart';
 import 'package:get/get.dart';
 
 import '../data/api/api_function.dart';
@@ -13,7 +14,9 @@ class AuthRepository {
     try {
       isLoader?.value = true;
       printData(key: "Login params", value: params);
-      await APIFunction().postApiCall(apiName: ApiUrls.loginUrl, params: params).then(
+      await APIFunction()
+          .postApiCall(apiName: ApiUrls.loginUrl, params: params)
+          .then(
         (response) async {
           if (!isValEmpty(response) && response["status"] == true) {
             if (!isValEmpty(response["message"])) {
@@ -27,7 +30,7 @@ class AuthRepository {
             await LocalStorage.storeDataInfo(data: response['user']).then(
               (value) {
                 // Get.delete<RegisterController>(force: true);
-                // Get.offAllNamed(AppRoutes.bottomBarScreen);
+                Get.offAllNamed(AppRoutes.bottomScreen);
               },
             );
 
@@ -38,6 +41,64 @@ class AuthRepository {
 
             // /// Like concept status
             // await LocalStorage.updateTipLikeStatus(likeConcePT: response["data"]['like_concept']);
+          }
+          return response;
+        },
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        printWarning(e.response?.statusCode);
+        printError(type: this, errText: "$e");
+      }
+    } finally {
+      isLoader?.value = false;
+    }
+  }
+
+  Future<dynamic> updatePasswordApiCall(
+      {RxBool? isLoader, dynamic params}) async {
+    try {
+      isLoader?.value = true;
+      await APIFunction()
+          .postApiCall(apiName: ApiUrls.updatePasswordUrl, params: params)
+          .then(
+        (response) async {
+          printData(key: "update password response", value: response);
+          if (!isValEmpty(response) && response["status"] == true) {
+            if (!isValEmpty(response["message"])) {
+              toast(response["message"].toString());
+              Get.back();
+              Get.offAllNamed(AppRoutes.loginScreen);
+            }
+          }
+          return response;
+        },
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        printWarning(e.response?.statusCode);
+        printError(type: this, errText: "$e");
+      }
+    } finally {
+      isLoader?.value = false;
+    }
+  }
+
+//forgot passwprd api
+  Future<dynamic> forgotPasswordApiCall(
+      {RxBool? isLoader, dynamic params}) async {
+    try {
+      isLoader?.value = true;
+      await APIFunction()
+          .postApiCall(apiName: ApiUrls.forgotPasswordUrl, params: params)
+          .then(
+        (response) async {
+          printData(key: "forgot password response", value: response);
+          if (!isValEmpty(response) && response["status"] == true) {
+            if (!isValEmpty(response["message"])) {
+              toast(response["message"].toString());
+              Get.offAllNamed(AppRoutes.loginScreen);
+            }
           }
           return response;
         },
