@@ -12,7 +12,7 @@ class LoginController extends GetxController {
   RxString emailError = ''.obs;
 
   Rx<TextEditingController> passwordCon =
-      TextEditingController(text: kDebugMode ? "12345678" : "").obs;
+      TextEditingController(text: kDebugMode ? "123456789" : "").obs;
   RxBool passwordValidation = false.obs;
   RxString passwordError = ''.obs;
 

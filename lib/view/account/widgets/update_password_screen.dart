@@ -47,7 +47,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                             onChanged: (value) {},
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(8),
+                              LengthLimitingTextInputFormatter(16),
                             ],
                           ),
                           SizedBox(height: defaultPadding.w),
@@ -61,7 +61,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                             onChanged: (value) {},
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(8),
+                              LengthLimitingTextInputFormatter(16),
                             ],
                           ),
                           SizedBox(height: 30.w),
@@ -75,14 +75,14 @@ class UpdatePasswordScreen extends StatelessWidget {
                             onChanged: (value) {},
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(8),
+                              LengthLimitingTextInputFormatter(16),
                             ],
                           ),
                           SizedBox(height: 30.w),
                           AppButton(
                               onPressed: () {
 //old password
-                                if (con.oldPasswordCon.value.text.length == 8) {
+                                if (con.oldPasswordCon.value.text.length == 16) {
                                   con.oldPasswordError.value = "";
                                   con.oldPasswordValidation.value = false;
                                   FocusScope.of(context).unfocus();
@@ -98,7 +98,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                                 }
 
                                 //new password
-                                if (con.newPasswordCon.value.text.length == 8) {
+                                if (con.newPasswordCon.value.text.length == 16) {
                                   con.newPasswordError.value = "";
                                   con.newPasswordValidation.value = false;
                                   FocusScope.of(context).unfocus();
@@ -120,7 +120,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                                 //   FocusScope.of(context).unfocus();
                                 // } else
                                 if (con.cnfmNewPasswordCon.value.text.length <
-                                    8) {
+                                    16) {
                                   con.cnfmNewPasswordValidation.value = true;
                                   con.cnfmNewPasswordError.value =
                                       "Please Enter your password at least 8 digits.";

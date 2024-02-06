@@ -1,11 +1,7 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:foodfestarestaurant/res/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 
 class EditAccountController extends GetxController {
   TextEditingController mobileNumberCon = TextEditingController();
@@ -22,10 +18,10 @@ class EditAccountController extends GetxController {
   RxString lastNameError = ''.obs;
   RxString emailError = ''.obs;
   RxBool isMobileValid = false.obs;
-
+  RxString image = "".obs;
   RxBool isLoader = false.obs;
   RxBool isLoading = false.obs;
-  File? selectedProfileImage;
+  RxString imagePath = "".obs;
 
   showImagePickerBottomSheet() {
     showModalBottomSheet<dynamic>(
@@ -59,7 +55,7 @@ class EditAccountController extends GetxController {
               title: const Text("Camera"),
               onTap: () {
                 Get.back();
-                getImageFromCamera();
+                selectImage(pickFromCamera: true);
               },
             ),
             ListTile(
@@ -74,7 +70,7 @@ class EditAccountController extends GetxController {
               title: const Text("Library"),
               onTap: () {
                 Get.back();
-                getImageFromGallery();
+                selectImage(pickFromCamera: false);
               },
             ),
             ListTile(
@@ -96,40 +92,26 @@ class EditAccountController extends GetxController {
   }
 
   String name = '';
-  // Get from gallery
-  getImageFromGallery() async {
-    isLoading(true);
-    XFile? pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      selectedProfileImage = File(pickedFile.path);
-      name = basename(pickedFile.path);
-    }
-    isLoading(false);
-  }
 
-  //Get from Camera
-  getImageFromCamera() async {
-    isLoading(true);
-    XFile? pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      selectedProfileImage = File(pickedFile.path);
-
-      log("Image pathg ${selectedProfileImage?.path}");
+  selectImage({bool pickFromCamera = false}) async {
+    XFile? pickedImage = await ImagePicker().pickImage(
+        source:
+            pickFromCamera == true ? ImageSource.camera : ImageSource.gallery);
+    if (pickedImage != null) {
+      imagePath.value = pickedImage.path;
     }
-    isLoading(false);
   }
 
   @override
   void onInit() {
-    emailCon.text = "customer@gmail.com";
+    if (Get.arguments != null) {
+      image.value = Get.arguments['image'];
+      firstNameCon.text = Get.arguments['firstName'];
+      lastNameCon.text = Get.arguments['lastName'];
+      emailCon.text = Get.arguments['email'] ?? "";
+      mobileNumberCon.text = Get.arguments['mobileNo'];
+    }
+
     super.onInit();
   }
 }

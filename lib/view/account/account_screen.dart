@@ -45,58 +45,92 @@ class AccountScreen extends StatelessWidget {
       Stack(
         children: [
           Positioned(
+            // left: 20,
+            // top: 20,
+            // right: 20,
+            // bottom: 20,
             child: Center(
               child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(200),
-                ),
-                child: profileController.getDataMap?.data.image != null
-                    ? Container(
-                        height: 180,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              profileController.getDataMap?.data.image ?? "",
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(200),
+                  ),
+                  child: Obx(
+                    () => profileController.userApiImageFile.value.isNotEmpty
+                        ? Container(
+                            height: 180,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  profileController.userApiImageFile.value,
+                                ),
+                                onError: (exception, stackTrace) =>
+                                    // Image.asset(AppImages.appLogoImage),
+                                    Image.network(
+                                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            onError: (exception, stackTrace) =>
-                                // Image.asset(AppImages.appLogoImage),
-                                Image.network(
-                                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
-                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            height: 180,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: const NetworkImage(
+                                      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'), //userProfileImage),
+                                  fit: BoxFit.cover,
+                                  onError: (exception, stackTrace) =>
+                                      // Image.asset(AppImages.appLogoImage),
+                                      Image.network(
+                                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")),
+                            ),
                           ),
-                        ),
-                      )
-                    : Container(
-                        height: 180,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: const NetworkImage(
-                                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'), //userProfileImage),
-                              fit: BoxFit.cover,
-                              onError: (exception, stackTrace) =>
-                                  // Image.asset(AppImages.appLogoImage),
-                                  Image.network(
-                                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")),
-                        ),
-                      ),
-              ),
+                  )),
             ),
           ),
+          // Positioned(
+          //     bottom: 20,
+          //     right: 20,
+          //     child: GestureDetector(
+          //       onTap: () {
+          //         // Get.to(
+          //         //   () => EditProfileScreen(),
+          //         // );
+          //       },
+          //       child: Container(
+          //         decoration: BoxDecoration(
+          //           color: Theme.of(Get.context!).primaryColor,
+          //           borderRadius: const BorderRadius.all(
+          //             Radius.circular(7),
+          //           ),
+          //         ),
+          //         child: Icon(Icons.edit,
+          //             color: Theme.of(Get.context!).primaryColor),
+          //         // Image.asset(
+          //         //   AppIcons.cameraIcon,
+          //         //   color: finalPrimaryColor,
+          //         //   height: 25,
+          //         //   width: 25,
+          //         // )
+          //       ),
+          //     ))
         ],
       ),
       const SizedBox(
         height: 10,
       ),
-      // Text("${profileController.getDataMap?.data.firstName} ${profileController.getDataMap?.data.lastName}",
-      //     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-      // Text("+91 ${profileController.getDataMap?.data.phone}",
-      //     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: AppColors.greyFontColor))
+      Obx(() => Text("${profileController.userName}",
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16))),
+      Obx(() => Text("+91 ${profileController.phoneNoName.value}",
+          style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              color: AppColors.greyFontColor)))
     ]);
   }
 
@@ -107,7 +141,34 @@ class AccountScreen extends StatelessWidget {
           icon: Icons.account_circle,
           title: 'Edit Account',
           onPressed: () {
-            Get.toNamed(AppRoutes.editAccountScreen);
+            Get.toNamed(AppRoutes.editAccountScreen, arguments: {
+              'image': profileController.userApiImageFile.value,
+              'firstName': profileController.firstName.value,
+              'lastName': profileController.lastName.value,
+              'email': profileController.email.value,
+              'mobileNo': profileController.phoneNoName.value
+            });
+          },
+        ),
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
+          icon: Icons.person,
+          title: 'Deliveryman',
+          onPressed: () {
+            Get.toNamed(AppRoutes.displayDeliveryManScreen);
+          },
+        ),
+
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
+          icon: Icons.person,
+          title: 'Customer',
+          onPressed: () {
+            Get.toNamed(AppRoutes.displayCustomerScreen);
           },
         ),
         // Divider(

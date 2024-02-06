@@ -6,12 +6,13 @@ import 'app_style.dart';
 
 class CommonAppBar extends StatelessWidget {
   final String title;
+  final bool? isLeadingShow;
   final void Function()? onPressed;
 
   const CommonAppBar({
     super.key,
     required this.title,
-    required this.onPressed,
+    required this.onPressed, this.isLeadingShow=true,
   });
 
   @override
@@ -23,13 +24,14 @@ class CommonAppBar extends StatelessWidget {
       ),
       child: MyAppBar(
         bgColor: Theme.of(context).colorScheme.background,
-        leading: IconButton(
+        leading: isLeadingShow==true?
+         IconButton(
           icon: Icon(
             Icons.arrow_back_outlined,
             color: Theme.of(context).primaryColor,
           ),
           onPressed: onPressed,
-        ),
+        ):null,
         title: title,
         centerTitle: true,
         titleStyle: AppStyle.customAppBarTitleStyle().copyWith(color: AppColors.black),

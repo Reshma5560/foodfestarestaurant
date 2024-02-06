@@ -50,19 +50,26 @@ class AppStrings {
   static String notificationNotFound = "Notification not found";
   static String noMessagesFound = "No Messages, yet.";
   static String notificationNotFoundTitle = "No Notification";
-  static String notificationNotFoundSubtitle = "We'll notify you when something arrives.";
-  static String deleteNotificationConfirmation = "This will permanently delete the item. Confirm deletion?";
+  static String notificationNotFoundSubtitle =
+      "We'll notify you when something arrives.";
+  static String deleteNotificationConfirmation =
+      "This will permanently delete the item. Confirm deletion?";
   static String giveYourFirstLike = "Give your first like";
+  static String recordNotFound = "Record not found";
 
   /// change password
   static const String enterPassValidationText = 'Please enter password';
   static const String enterNewPassValidationText = 'Please enter new password';
-  static const String enterConfirmPassValidationText = 'Please re-enter password';
+  static const String enterConfirmPassValidationText =
+      'Please re-enter password';
   static const String bothPassValidationText = 'Both password must be same!';
-  static const String validPassValidationText = 'Minimum 8 characters required!';
-  static const String strongPassValidationText = 'Password must contain at least 1 upper case, numeric, and special character.';
+  static const String validPassValidationText =
+      'Minimum 8 characters required!';
+  static const String strongPassValidationText =
+      'Password must contain at least 1 upper case, numeric, and special character.';
   static const String otpErrorText = 'Please enter 4 digit OTP';
-  static const String otpVerificationSuccessfully = "OTP verification successfully";
+  static const String otpVerificationSuccessfully =
+      "OTP verification successfully";
 
   /// Emoji Names
   static const String all = 'All';

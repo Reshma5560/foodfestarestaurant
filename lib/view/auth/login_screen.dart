@@ -76,8 +76,9 @@ class LoginScreen extends StatelessWidget {
                                   showError: con.passwordValidation.value,
                                   keyboardType: TextInputType.emailAddress,
                                   onChanged: (value) {
-                                    if (con.passwordCon.value.text.length == 8) {
+                                    if (con.passwordCon.value.text.length == 16) {
                                       con.passwordError.value = "";
+                                      con.passwordValidation.value=false;
                                       FocusScope.of(context).unfocus();
                                     } else if (con.passwordCon.value.text.length < 8) {
                                       con.passwordValidation.value = true;

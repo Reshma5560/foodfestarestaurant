@@ -9,6 +9,8 @@ import 'package:foodfestarestaurant/res/app_colors.dart';
 import 'package:foodfestarestaurant/res/app_style.dart';
 import 'package:foodfestarestaurant/res/app_text_field.dart';
 import 'package:get/get.dart';
+import 'dart:io' as io;
+
 
 class EditAccountScreen extends StatelessWidget {
   EditAccountScreen({super.key});
@@ -17,7 +19,7 @@ class EditAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, 
+      resizeToAvoidBottomInset: true,
       body: TweenAnimationBuilder(
           duration: const Duration(milliseconds: 1000),
           curve: Curves.easeOutCubic,
@@ -126,7 +128,7 @@ class EditAccountScreen extends StatelessWidget {
                         DesktopRepository().editProfileApiCall(
                           isLoader: editAccountController.isLoader,
                           // params: {
-                           
+
                           //   "image":editAccountController.name
                           //       // editAccountController.selectedProfileImage?.path
                           // },
@@ -154,41 +156,32 @@ class EditAccountScreen extends StatelessWidget {
             borderRadius: const BorderRadius.all(
               Radius.circular(200),
             ),
-            child: editAccountController.selectedProfileImage != null
-                ? Container(
-                    height: 180,
-                    width: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: FileImage(
-                          editAccountController.selectedProfileImage!,
-                        ),
-                        onError: (exception, stackTrace) =>
-                            // Image.asset(AppImages.appLogoImage),
-                            Image.network(
-                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+            child: Container(
+              height: 180,
+              width: 180,
+              decoration: const BoxDecoration(
+                color: Colors.grey,
+                shape: BoxShape.circle,
+              ),
+              child: Obx(
+                () => editAccountController.imagePath.isNotEmpty
+                    ? Image.file(
+                        io.File(editAccountController.imagePath.value),
                         fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-                : Container(
-                    height: 180,
-                    width: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: const NetworkImage(
-                              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'), //userProfileImage),
-                          fit: BoxFit.cover,
-                          onError: (exception, stackTrace) =>
-                              // Image.asset(AppImages.appLogoImage),
-                              Image.network(
-                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")),
-                    ),
-                  ),
+                      )
+                    : editAccountController.image.value.isNotEmpty
+                        ? Image.network(editAccountController.image.value)
+                        //  LocalStorage.userImage.value.contains("https://") || LocalStorage.userImage.value.contains("http://")
+                        //     ? MFNetworkImage(
+                        //         imageUrl: LocalStorage.userImage.value,
+                        //         fit: BoxFit.cover,
+                        //       )
+                        : Image.network(
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                            fit: BoxFit.cover,
+                          ),
+              ),
+            ),
           ),
         ),
       ),
@@ -201,7 +194,7 @@ class EditAccountScreen extends StatelessWidget {
                 editAccountController.showImagePickerBottomSheet();
               },
               child: Container(
-                  padding: EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: Theme.of(Get.context!).primaryColor,
                     // colorScheme.background,
