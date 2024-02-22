@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodfestarestaurant/view/index/widgets/order/order_management_screen.dart';
 import 'package:get/get.dart';
 
 import '../view/account/account_screen.dart';
@@ -11,8 +12,13 @@ class BottomController extends GetxController {
   void changeIndex(int index) async {
     selectedIndex.value = index;
     if (index == 0) {
-    } else if (index == 1) {}
+    } else if (index == 1) {
+    } else {}
   }
 
-  final pages = <Widget>[HomeScreen(), AccountScreen()];
+  final pages = <Widget>[
+    HomeScreen(),
+    OrderManagementScreen(),
+    AccountScreen()
+  ];
 }

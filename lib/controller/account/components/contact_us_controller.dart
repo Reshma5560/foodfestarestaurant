@@ -1,6 +1,3 @@
 import 'package:get/get.dart';
 
-class ContactUsController extends GetxController{
-
-
-}
+class ContactUsController extends GetxController {}

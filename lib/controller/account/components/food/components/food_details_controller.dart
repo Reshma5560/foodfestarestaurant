@@ -11,15 +11,13 @@ class FoodDetailsController extends GetxController {
 
   @override
   void onInit() {
-    print(Get.arguments['foodId']);
     foodId.value = Get.arguments['foodId'];
-    print(foodId.value);
     super.onInit();
   }
 
   @override
   Future<void> onReady() async {
-    await DesktopRepository().getFoodDetailsByIdAPI(
+    await DesktopRepository().getFoodDetailsByIdFoodScreenAPI(
       isLoader: isLoading,
       foodId: foodId.value,
     );

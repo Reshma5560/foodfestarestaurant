@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foodfestarestaurant/common_widgets/common_forward_arrow_row_module.dart';
 import 'package:foodfestarestaurant/common_widgets/simmer_tile.dart';
 import 'package:foodfestarestaurant/controller/home/home_controller.dart';
+import 'package:foodfestarestaurant/data/models/cureent_order_status_model.dart';
+import 'package:foodfestarestaurant/data/models/current_order_model.dart';
 import 'package:foodfestarestaurant/repositories/desktop_repository.dart';
 import 'package:foodfestarestaurant/res/app_appbar.dart';
 import 'package:foodfestarestaurant/res/app_assets.dart';
@@ -13,8 +12,6 @@ import 'package:foodfestarestaurant/res/app_strings.dart';
 import 'package:foodfestarestaurant/res/app_style.dart';
 import 'package:foodfestarestaurant/res/widgets/empty_element.dart';
 import 'package:foodfestarestaurant/route/app_routes.dart';
-import 'package:foodfestarestaurant/view/index/widgets/home/addons/addons_screen.dart';
-import 'package:foodfestarestaurant/view/index/widgets/home/food/food_screen.dart';
 import 'package:get/get.dart';
 
 import '../../../../common_widgets/row_module.dart';
@@ -26,33 +23,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: con.scaffoldDrawerKey,
-        endDrawer: Drawer(
-            child: Column(
-          children: [
-            const SizedBox(
-              height: 40,
-            ),
-            ForwardArrowRowModule(
-              labelText: "Food",
-              onTap: () {
-                Get.back();
-                Get.to(
-                  () => FoodScreen(),
-                );
-              },
-            ),
-            ForwardArrowRowModule(
-              labelText: 'Addons',
-              onTap: () {
-                Get.back();
-                Get.to(
-                  () => AddonsScreen(),
-                );
-              },
-            ),
-          ],
-        )),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterTop,
         resizeToAvoidBottomInset: true,
@@ -71,7 +41,6 @@ class HomeScreen extends StatelessWidget {
             tabs: con.orderTabList,
             onTap: (value) {
               con.tabIndex.value = value;
-              log(con.tabIndex.value.toString());
               if (con.tabIndex.value == 0) {
                 DesktopRepository().getCurrentOrderListAPI(isInitial: true);
               } else if (con.tabIndex.value == 1) {
@@ -87,10 +56,25 @@ class HomeScreen extends StatelessWidget {
                 controller: con.tabController,
                 children: con.orderTabList.map((e) {
                   return e.text == "Current Order"
-                      ? _currentOrderModule()
+                      ? RefreshIndicator(
+                          onRefresh: () async {
+                            await DesktopRepository()
+                                .getCurrentOrderListAPI(isInitial: true);
+                          },
+                          child: _currentOrderModule())
                       : e.text == "Request Order"
-                          ? _requestOrderModule()
-                          : _pastOrderModule();
+                          ? RefreshIndicator(
+                              onRefresh: () async {
+                                await DesktopRepository()
+                                    .getRequestOrderListAPI(isInitial: true);
+                              },
+                              child: _requestOrderModule())
+                          : RefreshIndicator(
+                              onRefresh: () async {
+                                await DesktopRepository()
+                                    .getCompletedOrderListAPI(isInitial: true);
+                              },
+                              child: _pastOrderModule());
                 }).toList()),
           ),
         ]));
@@ -105,7 +89,7 @@ class HomeScreen extends StatelessWidget {
             itemCount: 8,
             itemBuilder: (BuildContext context, index) => const SimmerTile(),
           )
-        : con.currentOrderListData.value.isEmpty
+        : con.currentOrderListData.isEmpty
             ? EmptyElement(
                 imagePath: AppAssets.noData,
                 height: Get.height / 1.8,
@@ -116,6 +100,7 @@ class HomeScreen extends StatelessWidget {
                 subtitle: "",
               )
             : ListView.builder(
+                controller: con.currentOrderScrollController,
                 itemCount: con.currentOrderListData.length,
                 itemBuilder: (BuildContext context, int index) {
                   var item = con.currentOrderListData[index];
@@ -125,6 +110,7 @@ class HomeScreen extends StatelessWidget {
                           arguments: {'orderId': item.id});
                     },
                     child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 3.h),
                       decoration: BoxDecoration(
                           color: AppColors.white,
                           boxShadow: AppStyle.boxShadow(),
@@ -164,12 +150,90 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(
                             height: 10.h,
                           ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          SizedBox(
+                              height: 30,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: _orderStatusDropDownModule(item)),
+                                  const Expanded(child: SizedBox())
+                                ],
+                              )),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                         ],
                       ).paddingSymmetric(vertical: 10, horizontal: 10),
                     ),
                   );
                 },
               ).paddingSymmetric(horizontal: 10.w, vertical: 5));
+  }
+
+  Widget _orderStatusDropDownModule(CurrentOrderDatum item) {
+    return Obx(() => DropdownButtonFormField<CurrentOrderStatusDatum>(
+          // menuMaxHeight: 400,
+          decoration: InputDecoration(
+            fillColor: AppColors.white,
+            filled: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 18.0),
+            enabledBorder: OutlineInputBorder(
+              // borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(color: AppColors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              // borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(color: AppColors.grey),
+            ),
+          ),
+          hint: const Text("Select Order status"),
+          value: con.orderstatusDropDownValue.value,
+          icon: Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: AppColors.grey,
+          ),
+          items: con.getCurrentOrderStatusListData
+              .map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
+            // log("value.name ${value.countryName}");
+            return DropdownMenuItem<CurrentOrderStatusDatum>(
+              value: value,
+              child: Text(
+                value.statusName ?? "",
+                style: TextStyle(
+                  color: AppColors.greyFontColor,
+                  fontSize: 11.sp,
+                ),
+              ),
+            );
+          }).toList(),
+          isDense: true,
+          isExpanded: false,
+          dropdownColor: AppColors.white,
+          // underline: Container(height: 1, color: AppColors.blackColor),
+          // borderRadius: const BorderRadius.all(Radius.circular(15)),
+          style: TextStyle(
+            color: AppColors.grey,
+            fontSize: 11.sp,
+          ),
+          onChanged: (value) async {
+            con.isLoading(true);
+            con.orderstatusDropDownValue.value =
+                value ?? CurrentOrderStatusDatum();
+            // con.stateList.clear();
+            // con.stateList.add(StateList(stateName: 'Select state'));
+
+            DesktopRepository().updateOrderStatusApiCall(
+                isLoader: con.isLoading,
+                params: {
+                  "order_id": item.id,
+                  "order_status_id": value?.id ?? ""
+                });
+            con.isLoading(false);
+          },
+        ));
   }
 
   Widget _requestOrderModule() {
@@ -192,6 +256,7 @@ class HomeScreen extends StatelessWidget {
                 subtitle: "",
               )
             : ListView.builder(
+                controller: con.requestOrderScrollController,
                 itemCount: con.requestOrderListData.length,
                 itemBuilder: (BuildContext context, int index) {
                   var item = con.requestOrderListData[index];
@@ -205,6 +270,7 @@ class HomeScreen extends StatelessWidget {
                       });
                     },
                     child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 3.h),
                       decoration: BoxDecoration(
                           color: AppColors.white,
                           boxShadow: AppStyle.boxShadow(),
@@ -257,6 +323,7 @@ class HomeScreen extends StatelessWidget {
                                 onPressed: () {
                                   var params = {
                                     "order_id": item.id,
+                                    "status": 2
                                   };
                                   DesktopRepository()
                                       .acceptOrderApiCall(
@@ -265,6 +332,31 @@ class HomeScreen extends StatelessWidget {
                                       .then((value) => isAccept.value = true);
                                 },
                                 child: const Text("Accept"),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  var params = {
+                                    "order_id": item.id,
+                                    "status": 3
+                                  };
+                                  DesktopRepository()
+                                      .acceptOrderApiCall(
+                                          isLoader: con.isLoading,
+                                          params: params)
+                                      .then((value) => isAccept.value = true);
+                                },
+                                child: const Text("Reject"),
                               ),
                             ],
                           )
@@ -296,10 +388,12 @@ class HomeScreen extends StatelessWidget {
                 subtitle: "",
               )
             : ListView.builder(
+                controller: con.pastOrderScrollController,
                 itemCount: con.completeOrderListData.length,
                 itemBuilder: (BuildContext context, int index) {
                   var item = con.completeOrderListData[index];
                   return Container(
+                    margin: EdgeInsets.symmetric(vertical: 3.h),
                     decoration: BoxDecoration(
                         color: AppColors.white,
                         boxShadow: AppStyle.boxShadow(),

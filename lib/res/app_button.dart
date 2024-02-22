@@ -7,7 +7,6 @@ import '../utils/utils.dart';
 import 'app_loader.dart';
 import 'app_style.dart';
 
-
 enum ButtonType { elevated, gradient, outline }
 
 class AppButton extends StatefulWidget {
@@ -24,6 +23,7 @@ class AppButton extends StatefulWidget {
   final double? height;
   final double? fontSize;
   final Widget? child;
+  final double borderWidth;
   final bool? disableButton;
   final bool? loader;
   final BorderRadiusGeometry? borderRadius;
@@ -48,6 +48,7 @@ class AppButton extends StatefulWidget {
     this.height,
     this.fontSize,
     this.child,
+    this.borderWidth = 1,
     this.disableButton = false,
     this.loader = false,
     this.borderRadius,
@@ -70,7 +71,9 @@ class _AppButtonState extends State<AppButton> {
       () => TweenAnimationBuilder(
         duration: const Duration(milliseconds: 1200),
         curve: Curves.elasticOut,
-        tween: widget.loader == true || buttonPress.value == true ? Tween(begin: 0.9, end: 0.97) : Tween(begin: 1.0, end: 1.0),
+        tween: widget.loader == true || buttonPress.value == true
+            ? Tween(begin: 0.9, end: 0.97)
+            : Tween(begin: 1.0, end: 1.0),
         builder: (context, value, child) {
           return Transform.scale(
             scale: value,
@@ -80,9 +83,22 @@ class _AppButtonState extends State<AppButton> {
               height: widget.height?.w ?? 46.w,
               margin: widget.padding ?? EdgeInsets.zero,
               decoration: BoxDecoration(
-                borderRadius: widget.borderRadius ?? BorderRadius.circular(defaultRadius),
-                color: widget.backgroundColor ?? (widget.buttonType == ButtonType.outline ? null : Theme.of(context).primaryColor.withOpacity(withMyOpacity)),
-                border: widget.buttonType == ButtonType.outline ? Border.all(color: widget.borderColor ?? Theme.of(context).primaryColor.withOpacity(disableOpacity)) : null,
+                borderRadius:
+                    widget.borderRadius ?? BorderRadius.circular(defaultRadius),
+                color: widget.backgroundColor ??
+                    (widget.buttonType == ButtonType.outline
+                        ? null
+                        : Theme.of(context)
+                            .primaryColor
+                            .withOpacity(withMyOpacity)),
+                border: widget.buttonType == ButtonType.outline
+                    ? Border.all(
+                        color: widget.borderColor ??
+                            Theme.of(context)
+                                .primaryColor
+                                .withOpacity(disableOpacity),
+                        width: widget.borderWidth)
+                    : null,
                 gradient: loadingOrDisableStatus
                     ? (widget.buttonType == ButtonType.gradient
                         ? (widget.gradient ??
@@ -100,9 +116,14 @@ class _AppButtonState extends State<AppButton> {
                     : null,
               ),
               child: RawMaterialButton(
-                splashColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(widget.loader == false ? .1 : 0),
-                highlightColor: Theme.of(context).primaryColor.withOpacity(widget.buttonType == ButtonType.outline ? .1 : .0),
-                shape: RoundedRectangleBorder(borderRadius: widget.borderRadius ?? BorderRadius.circular(defaultRadius)),
+                splashColor: Theme.of(context)
+                    .scaffoldBackgroundColor
+                    .withOpacity(widget.loader == false ? .1 : 0),
+                highlightColor: Theme.of(context).primaryColor.withOpacity(
+                    widget.buttonType == ButtonType.outline ? .1 : .0),
+                shape: RoundedRectangleBorder(
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(defaultRadius)),
                 hoverElevation: widget.loader == false ? 4.0 : 0.0,
                 elevation: widget.loader == false ? 2.0 : 0.0,
                 disabledElevation: 0,
@@ -114,7 +135,9 @@ class _AppButtonState extends State<AppButton> {
                         setState(
                           () {
                             buttonPress.value = press;
-                            widget.onHighlightChanged != null ? widget.onHighlightChanged!(press) : null;
+                            widget.onHighlightChanged != null
+                                ? widget.onHighlightChanged!(press)
+                                : null;
                           },
                         );
                       }
@@ -154,7 +177,8 @@ class _AppButtonState extends State<AppButton> {
                               Text(
                                 widget.title!,
                                 textAlign: TextAlign.center,
-                                style: widget.titleStyle?.copyWith(color: titleColor) ??
+                                style: widget.titleStyle
+                                        ?.copyWith(color: titleColor) ??
                                     TextStyle(
                                       fontSize: 14.sp,
                                       color: titleColor,
@@ -166,7 +190,10 @@ class _AppButtonState extends State<AppButton> {
                           ],
                         ))
                     : CircularLoader(
-                        color: widget.loaderColor ?? (widget.buttonType == ButtonType.outline ? Theme.of(context).primaryColor.withOpacity(.7) : null),
+                        color: widget.loaderColor ??
+                            (widget.buttonType == ButtonType.outline
+                                ? Theme.of(context).primaryColor.withOpacity(.7)
+                                : null),
                       ),
               ),
             ),
@@ -177,15 +204,21 @@ class _AppButtonState extends State<AppButton> {
   }
 
   Color? get titleColor {
-    return widget.buttonType == ButtonType.outline ? Theme.of(context).primaryColor.withOpacity(disableOpacity) : Colors.white.withOpacity(disableOpacity);
+    return widget.buttonType == ButtonType.outline
+        ? Theme.of(context).primaryColor.withOpacity(disableOpacity)
+        : Colors.white.withOpacity(disableOpacity);
   }
 
   bool get loadingOrDisableStatus {
-    return widget.disableButton == false ? (widget.loader == false ? true : false) : false;
+    return widget.disableButton == false
+        ? (widget.loader == false ? true : false)
+        : false;
   }
 
   double get withMyOpacity {
-    return widget.loader == false ? (widget.disableButton == true ? .2 : 1.0) : .4;
+    return widget.loader == false
+        ? (widget.disableButton == true ? .2 : 1.0)
+        : .4;
   }
 
   double get disableOpacity {

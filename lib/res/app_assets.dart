@@ -6,7 +6,7 @@ class AppAssets {
 
   /// ICONS ///
   static String infoProfileIcon = '${iconPath}info_profile_icon.png';
-  
+
   static String homeIcon = '${iconPath}ic_home.png';
   static String categoryIcon = '${iconPath}ic_category.png';
   static String profileIcon = '${iconPath}ic_profile.png';
@@ -17,7 +17,11 @@ class AppAssets {
   static String emptyData = '${imagesPath}empty_data.png';
   static String notificationNotFond = '${imagesPath}notification_not_fond.png';
   static String searchDataEmpty = '${imagesPath}search_empty.png';
-  static String noData='${imagesPath}no_data.jpg';
+  static String noData = '${imagesPath}no_data.jpg';
+  static String cashImg = '${imagesPath}collected_cash.png';
+  static String penWithdrawImg = '${imagesPath}pending_withdraw.png';
+  static String earningImg = '${imagesPath}total_earning.png';
+  static String totalWithdrawImg = '${imagesPath}total_withdraw.png';
 
   /// SVG ///
 

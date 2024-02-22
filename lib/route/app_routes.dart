@@ -16,6 +16,13 @@ class AppRoutes {
   static String displayCustomerScreen = "/DISPLAY_CUSTOMER_SCREEN";
   static String foodDetailsScreen = "/FOOD_DETAILS_SCREEN";
   static String addFoodScreen = "/ADD_FOOD_SCREEN";
+  static String foodScreen="/FOOD_SCREEN";
+  static String addonsScreen="/ADDONS_SCREEN";
+  static String orderManagementDetailScreen = "/ORDER_MANAGEMENT_DETAIL_SCREEN";
+  static String businessManagementScreen = "/BUSINESS_MANAGEMENT_SCREEN";
+  static String businessManagementScheduleScreen = "/BUSINESS_MANAGEMENT_SCHEDULE_SCREEN";
+  static String myEarningScreen = "/MY_EARNING_SCREEN";
+  
 /*  static String bottomBarScreen = '/BOTTOMBAR_SCREEN';
   static String createOrUpdateGroupScreen = '/CREATE_NEW_GROUP_SCREEN';
   static String notificationScreen = '/NOTIFICATION_SCREEN';

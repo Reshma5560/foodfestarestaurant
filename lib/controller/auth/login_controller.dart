@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:foodfestarestaurant/utils/local_storage.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
@@ -18,4 +19,24 @@ class LoginController extends GetxController {
 
   RxBool buttonPress = false.obs;
   RxBool isLoading = false.obs;
+
+  
+  RxBool isRemeber = false.obs;
+  RxBool passwordVisible = false.obs;
+
+  
+  @override
+  void onInit() {
+    initMethod();
+    super.onInit();
+  }
+
+  Future<void> initMethod() async {
+    // await LocalStorage.readDataInfo();
+    if (LocalStorage.isRemeber.value == true) {
+      isRemeber.value = true;
+      emailCon.value.text = LocalStorage.loginEmail.value;
+      passwordCon.value.text = LocalStorage.loginPassword.value;
+    }
+  }
 }

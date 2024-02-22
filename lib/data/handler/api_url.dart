@@ -24,19 +24,38 @@ class ApiUrls {
   static String getCompleteOrderUrl = "get-completed-order";
   static String getOrderByIdUrl = "order-detail";
   static String acceptOrderUrl = "accept-order";
+  static String getOrderHistoryFilterUrl = "get-order-filter";
 
+  static String getCurrentOrderStatusListUrl = "get-current-order-status";
+  static String updateCurrentOrderStatusUrl = "update-current-order-status";
   //food
   static String getFoodUrl = "get-food";
+  static String addFoodUrl = "add-food";
   static String getFoodDetailsUrl = "food-detail";
+  static String getCategoryUrl = "category";
+  static String getSubCategoryUrl = "sub-category";
+  static String getRestaurantAddonsUrl = "get-addon";
+  static String updateFoodUrl = "update-food";
+  static String deleteFoodUrl = "delete-food";
+  static String updateFoodStatus = "update-food-status";
 
 //addon
-  static String getAddonsUrl = "get-addon";
+  static String getAddonsUrl = "get-all-addon";
   static String addAddonsUrl = "add-addon";
   static String addonsDetailUrl = "addon-detail";
+  static String updateAddonUrl = "update-addon";
+  static String updateAddonStatusUrl = "update-addon-status";
+  static String deleteAddonsUrl = "delete-addon";
 
 //account
   static String getDeliveryManUrl = "get-deliveryman";
   static String getCustomerUrl = "get-customer";
+  static String getBusinessConfigUrl = "get-config-data";
+  static String addScheduleUrl = "schedule";
+  static String addConfigUrl = "config";
+  static String getCuisineUrl = "get-cuisine";
+  static String getScheduleUrl = "get-schedule";
+  static String getMyearningUrl="earning";
 
 // //? Bottombar Api's
 // static String groups = "group/group-list";

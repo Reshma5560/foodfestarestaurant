@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodfestarestaurant/controller/home/components/food/components/food_details_controller.dart';
+import 'package:foodfestarestaurant/controller/account/components/food/components/food_details_controller.dart';
 import 'package:foodfestarestaurant/res/app_appbar.dart';
 import 'package:foodfestarestaurant/res/app_loader.dart';
 import 'package:get/get.dart';

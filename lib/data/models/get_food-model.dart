@@ -1,6 +1,6 @@
-// To parse this JSON data, do
-//
 //     final getFoodModel = getFoodModelFromJson(jsonString);
+
+// ignore_for_file: file_names
 
 import 'dart:convert';
 
@@ -31,7 +31,7 @@ class GetFoodModel {
 
 class GetFoodData {
   final int? currentPage;
-  final List<Datum>? data;
+  final List<GetFoodDatum>? data;
   final String? firstPageUrl;
   final int? from;
   final int? lastPage;
@@ -64,7 +64,8 @@ class GetFoodData {
         currentPage: json["current_page"],
         data: json["data"] == null
             ? []
-            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+            : List<GetFoodDatum>.from(
+                json["data"]!.map((x) => GetFoodDatum.fromJson(x))),
         firstPageUrl: json["first_page_url"],
         from: json["from"],
         lastPage: json["last_page"],
@@ -101,7 +102,7 @@ class GetFoodData {
       };
 }
 
-class Datum {
+class GetFoodDatum {
   final String? id;
   final String? foodName;
   final String? description;
@@ -138,9 +139,10 @@ class Datum {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? commentsCount;
+  final Category? category;
   final List<dynamic>? translations;
 
-  Datum({
+  GetFoodDatum({
     this.id,
     this.foodName,
     this.description,
@@ -178,9 +180,10 @@ class Datum {
     this.updatedAt,
     this.commentsCount,
     this.translations,
+    this.category,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory GetFoodDatum.fromJson(Map<String, dynamic> json) => GetFoodDatum(
         id: json["id"],
         foodName: json["food_name"],
         description: json["description"],
@@ -226,6 +229,9 @@ class Datum {
         translations: json["translations"] == null
             ? []
             : List<dynamic>.from(json["translations"]!.map((x) => x)),
+        category: json["category"] == null
+            ? null
+            : Category.fromJson(json["category"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -270,6 +276,91 @@ class Datum {
         "translations": translations == null
             ? []
             : List<dynamic>.from(translations!.map((x) => x)),
+        "category": category?.toJson(),
+      };
+}
+
+class Category {
+  final String? id;
+  final String? categoryName;
+  final String? image;
+  final String? slug;
+  final dynamic parentId;
+  final int? position;
+  final int? isActive;
+  final dynamic createdBy;
+  final dynamic updatedBy;
+  final dynamic deletedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? priority;
+  final String? parentname;
+  final List<dynamic>? translations;
+  final dynamic parent;
+
+  Category({
+    this.id,
+    this.categoryName,
+    this.image,
+    this.slug,
+    this.parentId,
+    this.position,
+    this.isActive,
+    this.createdBy,
+    this.updatedBy,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.priority,
+    this.parentname,
+    this.translations,
+    this.parent,
+  });
+
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
+        id: json["id"],
+        categoryName: json["category_name"],
+        image: json["image"],
+        slug: json["slug"],
+        parentId: json["parent_id"],
+        position: json["position"],
+        isActive: json["is_active"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        deletedAt: json["deleted_at"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        priority: json["priority"],
+        parentname: json["parentname"],
+        translations: json["translations"] == null
+            ? []
+            : List<dynamic>.from(json["translations"]!.map((x) => x)),
+        parent: json["parent"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "category_name": categoryName,
+        "image": image,
+        "slug": slug,
+        "parent_id": parentId,
+        "position": position,
+        "is_active": isActive,
+        "created_by": createdBy,
+        "updated_by": updatedBy,
+        "deleted_at": deletedAt,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "priority": priority,
+        "parentname": parentname,
+        "translations": translations == null
+            ? []
+            : List<dynamic>.from(translations!.map((x) => x)),
+        "parent": parent,
       };
 }
 

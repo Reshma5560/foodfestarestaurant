@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:foodfestarestaurant/res/app_colors.dart';
+import 'package:foodfestarestaurant/res/color_print.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -21,6 +24,8 @@ class EditAccountController extends GetxController {
   RxString image = "".obs;
   RxBool isLoader = false.obs;
   RxBool isLoading = false.obs;
+
+  File? apiImage;
   RxString imagePath = "".obs;
 
   showImagePickerBottomSheet() {
@@ -92,12 +97,16 @@ class EditAccountController extends GetxController {
   }
 
   String name = '';
-
   selectImage({bool pickFromCamera = false}) async {
     XFile? pickedImage = await ImagePicker().pickImage(
-        source:
-            pickFromCamera == true ? ImageSource.camera : ImageSource.gallery);
+      source: pickFromCamera == true ? ImageSource.camera : ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+
     if (pickedImage != null) {
+      apiImage = File(pickedImage.path);
+      printYellow("---------------------  $apiImage");
       imagePath.value = pickedImage.path;
     }
   }

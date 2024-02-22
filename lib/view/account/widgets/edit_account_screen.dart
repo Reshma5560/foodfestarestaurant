@@ -11,7 +11,6 @@ import 'package:foodfestarestaurant/res/app_text_field.dart';
 import 'package:get/get.dart';
 import 'dart:io' as io;
 
-
 class EditAccountScreen extends StatelessWidget {
   EditAccountScreen({super.key});
 
@@ -127,11 +126,6 @@ class EditAccountScreen extends StatelessWidget {
                       onPressed: () {
                         DesktopRepository().editProfileApiCall(
                           isLoader: editAccountController.isLoader,
-                          // params: {
-
-                          //   "image":editAccountController.name
-                          //       // editAccountController.selectedProfileImage?.path
-                          // },
                         );
                       },
                       title: "Update",
@@ -157,8 +151,8 @@ class EditAccountScreen extends StatelessWidget {
               Radius.circular(200),
             ),
             child: Container(
-              height: 180,
-              width: 180,
+              height: 100,
+              width: 100,
               decoration: const BoxDecoration(
                 color: Colors.grey,
                 shape: BoxShape.circle,
@@ -186,8 +180,8 @@ class EditAccountScreen extends StatelessWidget {
         ),
       ),
       Positioned(
-          bottom: 20,
-          right: 100,
+          bottom: 16,
+          right: 130,
           child: Center(
             child: GestureDetector(
               onTap: () {
@@ -209,7 +203,7 @@ class EditAccountScreen extends StatelessWidget {
                     //  Theme.of(Get.context!).primaryColor,
                     // height: 25,
                     // width: 25,
-                    size: 25,
+                    size: 18,
                   )),
             ),
           ))

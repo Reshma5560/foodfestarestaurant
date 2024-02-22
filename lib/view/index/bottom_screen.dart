@@ -65,17 +65,17 @@ class BottomScreen extends StatelessWidget {
                           ),
                           label: "Home",
                         ),
-                        // BottomNavigationBarItem(
-                        //   icon: Image.asset(
-                        //     AppAssets.categoryIcon,
-                        //     height: 18.w,
-                        //     color:
-                        //         indexScreenController.selectedIndex.value == 1
-                        //             ? Theme.of(context).primaryColor
-                        //             : AppColors.black.withOpacity(0.4),
-                        //   ),
-                        //   label: "Food",
-                        // ),
+                        BottomNavigationBarItem(
+                          icon: Image.asset(
+                            AppAssets.categoryIcon,
+                            height: 18.w,
+                            color:
+                                indexScreenController.selectedIndex.value == 1
+                                    ? Theme.of(context).primaryColor
+                                    : AppColors.black.withOpacity(0.4),
+                          ),
+                          label: "Food",
+                        ),
                         BottomNavigationBarItem(
                           icon: Image.asset(
                             AppAssets.profileIcon,

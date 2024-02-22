@@ -12,7 +12,8 @@ class CommonAppBar extends StatelessWidget {
   const CommonAppBar({
     super.key,
     required this.title,
-    required this.onPressed, this.isLeadingShow=true,
+    required this.onPressed,
+    this.isLeadingShow = true,
   });
 
   @override
@@ -24,17 +25,18 @@ class CommonAppBar extends StatelessWidget {
       ),
       child: MyAppBar(
         bgColor: Theme.of(context).colorScheme.background,
-        leading: isLeadingShow==true?
-         IconButton(
-          icon: Icon(
-            Icons.arrow_back_outlined,
-            color: Theme.of(context).primaryColor,
-          ),
-          onPressed: onPressed,
-        ):null,
+        leading: isLeadingShow == true
+            ? IconButton(
+                icon: Icon(Icons.arrow_back_outlined, color: AppColors.black
+                    // Theme.of(context).primaryColor,
+                    ),
+                onPressed: onPressed,
+              )
+            : null,
         title: title,
         centerTitle: true,
-        titleStyle: AppStyle.customAppBarTitleStyle().copyWith(color: AppColors.black),
+        titleStyle:
+            AppStyle.customAppBarTitleStyle().copyWith(color: AppColors.black),
       ),
     );
   }

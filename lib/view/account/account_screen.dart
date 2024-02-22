@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodfestarestaurant/common_widgets/custom_alert_dislog.dart';
 import 'package:foodfestarestaurant/common_widgets/custom_list_tile.dart';
 import 'package:foodfestarestaurant/controller/account/account_controller.dart';
 import 'package:foodfestarestaurant/res/app_colors.dart';
 import 'package:foodfestarestaurant/res/app_style.dart';
 import 'package:foodfestarestaurant/route/app_routes.dart';
+import 'package:foodfestarestaurant/utils/local_storage.dart';
 import 'package:get/get.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -57,8 +59,8 @@ class AccountScreen extends StatelessWidget {
                   child: Obx(
                     () => profileController.userApiImageFile.value.isNotEmpty
                         ? Container(
-                            height: 180,
-                            width: 180,
+                            height: 100,
+                            width: 100,
                             decoration: BoxDecoration(
                               color: Colors.grey,
                               shape: BoxShape.circle,
@@ -75,8 +77,8 @@ class AccountScreen extends StatelessWidget {
                             ),
                           )
                         : Container(
-                            height: 180,
-                            width: 180,
+                            height: 100,
+                            width: 100,
                             decoration: BoxDecoration(
                               color: Colors.grey,
                               shape: BoxShape.circle,
@@ -154,6 +156,17 @@ class AccountScreen extends StatelessWidget {
           color: AppColors.grey,
         ),
         CustomListTile(
+          icon: Icons.food_bank,
+          title: 'Business Management',
+          onPressed: () {
+            Get.back();
+            Get.toNamed(AppRoutes.businessManagementScreen);
+          },
+        ),
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
           icon: Icons.person,
           title: 'Deliveryman',
           onPressed: () {
@@ -171,26 +184,37 @@ class AccountScreen extends StatelessWidget {
             Get.toNamed(AppRoutes.displayCustomerScreen);
           },
         ),
-        // Divider(
-        //   color: AppColors.grey,
-        // ),
-        // CustomListTile(
-        //   icon: Icons.location_on,
-        //   title: 'Manage Address',
-        //   onPressed: () {
-        //     Get.toNamed(AppRoutes.manageAddressScreen);
-        //   },
-        // ),
-        // Divider(
-        //   color: AppColors.grey,
-        // ),
-        // CustomListTile(
-        //   icon: Icons.favorite,
-        //   title: 'Favorite',
-        //   onPressed: () {
-        //     Get.toNamed(AppRoutes.wishListScreen);
-        //   },
-        // ),
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
+          icon: Icons.fastfood,
+          title: 'Food',
+          onPressed: () {
+            Get.back();
+            Get.toNamed(AppRoutes.foodScreen);
+          },
+        ),
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
+          icon: Icons.food_bank,
+          title: 'Addons',
+          onPressed: () {
+            Get.back();
+            Get.toNamed(AppRoutes.addonsScreen);
+          },
+        ),
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
+          icon: Icons.money,
+          title: 'My Earning',
+          onPressed: () {
+            Get.toNamed(AppRoutes.myEarningScreen);
+          },),
         Divider(
           color: AppColors.grey,
         ),
@@ -199,6 +223,16 @@ class AccountScreen extends StatelessWidget {
           title: 'Change password',
           onPressed: () {
             Get.toNamed(AppRoutes.updatePasswordScreen);
+          },
+        ),
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
+          icon: Icons.logout,
+          title: 'Logout',
+          onPressed: () {
+            _logoutWidget();
           },
         ),
         // Divider(
@@ -246,6 +280,32 @@ class AccountScreen extends StatelessWidget {
         //   title: 'Setting',
         // ),
       ],
+    );
+  }
+
+  _logoutWidget() {
+    return showDialog(
+      barrierDismissible: false,
+      context: Get.context!,
+      builder: (context) {
+        return CustomLogoutAlertDialog(
+          text: "Logout",
+          content: "Are you sure you want logout ?",
+          yesButtonText: "Yes",
+          onYesPressed: () {
+            profileController.isLoader.value = true;
+
+            LocalStorage.clearLocalStorage().then((value) {
+              Get.offAllNamed(AppRoutes.loginScreen);
+            });
+          },
+          //  () async => await DesktopRepository()
+          //     .logOutApiCall(isLoader: profileController.isLoader),
+          noButtonText: "No",
+          onNoPressed: () => Get.back(),
+          bgColor: Theme.of(context).primaryColor,
+        );
+      },
     );
   }
 }

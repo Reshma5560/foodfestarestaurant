@@ -20,7 +20,7 @@ class OrderDetailController extends GetxController {
   Future<void> onReady() async {
     await DesktopRepository().getOrderByIdApiCall(
         isLoader: isLoading,
-        orderId: orderId); // "9b3acdb9-facd-48f7-b42b-808a47ee202a");
+        orderId: orderId, orderData: getOrderDataModel); // "9b3acdb9-facd-48f7-b42b-808a47ee202a");
     super.onReady();
   }
 }

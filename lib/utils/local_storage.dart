@@ -1,4 +1,3 @@
-
 import 'package:foodfestarestaurant/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -20,6 +19,10 @@ class Prefs {
   static const String deviceId = "DEVICE_ID";
   static const String deviceType = "DEVICE_TYPE";
   static const String deviceFCMToken = "DEVICE_FCM_TOKEN";
+
+  static const String loginEmail = "EMAIL_ID";
+  static const String loginPassword = "PASSWORD";
+  static const String isRemeber = "IS_REMEBER";
 
   // static const String isGuestUser = "GUEST_USER";
   // static const String showPreview = "SHOW_PREVIEW";
@@ -49,6 +52,10 @@ class LocalStorage {
   static RxString deviceId = "".obs;
   static RxString deviceToken = "".obs;
   static RxString deviceType = "".obs;
+
+  static RxString loginEmail = "".obs;
+  static RxString loginPassword = "".obs;
+  static RxBool isRemeber = false.obs;
 
   // static RxBool isGuestUser = true.obs;
   // static RxBool showPreview = true.obs;
@@ -99,7 +106,8 @@ class LocalStorage {
   //   appStoreLink.value = prefs.read(Prefs.appStoreLink) ?? "";
   // }
 
-  Future updateUserInfo({String? fistNaMEe, String? lastNaME, String? userImaGE}) async {
+  Future updateUserInfo(
+      {String? fistNaMEe, String? lastNaME, String? userImaGE}) async {
     if (!isValEmpty(fistNaMEe)) {
       await prefs.write(Prefs.firstName, fistNaMEe);
       firstName.value = prefs.read(Prefs.firstName) ?? "";
@@ -151,6 +159,31 @@ class LocalStorage {
     }
   }
 
+  static Future<void> setLoginInfo(
+      {required String userEmail,
+      required String userPassword,
+      required bool isRemeberData}) async {
+    if (!isValEmpty(userEmail)) {
+      await prefs.write(Prefs.loginEmail, userEmail);
+      loginEmail.value = prefs.read(Prefs.loginEmail);
+    }
+
+    if (!isValEmpty(userPassword)) {
+      await prefs.write(Prefs.loginPassword, userPassword);
+      loginPassword.value = prefs.read(Prefs.loginPassword) ?? "";
+    }
+
+    await prefs.write(Prefs.isRemeber, isRemeberData);
+    isRemeber.value = prefs.read(Prefs.isRemeber);
+  }
+
+  static Future<void> clearLoginData() async {
+    await prefs.erase();
+    loginEmail = "".obs;
+    loginPassword = "".obs;
+    isRemeber = false.obs;
+  }
+
   static Future<void> clearLocalStorage({bool clearDeviceData = false}) async {
     await prefs.erase();
     token = "".obs;
@@ -193,6 +226,10 @@ class LocalStorage {
     deviceToken.value = prefs.read(Prefs.deviceFCMToken) ?? "";
     deviceType.value = prefs.read(Prefs.deviceType) ?? "";
 
+    loginEmail.value = prefs.read(Prefs.loginEmail) ?? "";
+    loginPassword.value = prefs.read(Prefs.loginPassword) ?? "";
+    isRemeber.value = prefs.read(Prefs.isRemeber) ?? false;
+
     // privacyPolicyLink.value = prefs.read(Prefs.privacyPolicyLink) ?? "";
     // termsAndConditionsLink.value = prefs.read(Prefs.termsAndConditionsLink) ?? "";
     // faqLink.value = prefs.read(Prefs.faqLink) ?? "";
@@ -215,6 +252,9 @@ class LocalStorage {
     printData(key: "User mobileNumber", value: LocalStorage.mobileNumber.value);
     printData(key: "User isUserActive", value: LocalStorage.isUserActive.value);
     printData(key: "User isUserVerify", value: LocalStorage.isUserVerify.value);
+    printData(key: "User email", value: LocalStorage.loginEmail.value);
+    printData(key: "User password", value: LocalStorage.loginPassword.value);
+    printData(key: "User is remeber ", value: LocalStorage.isRemeber.value);
     // printData(key: "Show Preview", value: LocalStorage.showPreview.value);
     // printData(key: "Like Concept", value: LocalStorage.likeConcept.value);
   }

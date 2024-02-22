@@ -45,7 +45,7 @@ class Data {
   int isActive;
   int newsletterSubscribe;
   int isVerified;
-  String verifyCode;
+  // String verifyCode;
   dynamic deletedAt;
 
   // DateTime createdAt;
@@ -59,7 +59,7 @@ class Data {
   int loyaltyPoint;
   dynamic refCode;
   dynamic refBy;
-  String tempToken;
+  // String tempToken;
   String currentLanguageKey;
   List<Role> roles;
 
@@ -77,7 +77,7 @@ class Data {
     required this.isActive,
     required this.newsletterSubscribe,
     required this.isVerified,
-    required this.verifyCode,
+    // required this.verifyCode,
     required this.deletedAt,
     // required this.createdAt,
     // required this.updatedAt,
@@ -90,7 +90,7 @@ class Data {
     required this.loyaltyPoint,
     required this.refCode,
     required this.refBy,
-    required this.tempToken,
+    // required this.tempToken,
     required this.currentLanguageKey,
     required this.roles,
   });
@@ -109,7 +109,7 @@ class Data {
         isActive: json["is_active"],
         newsletterSubscribe: json["newsletter_subscribe"],
         isVerified: json["is_verified"],
-        verifyCode: json["verify_code"],
+        // verifyCode: json["verify_code"],
         deletedAt: json["deleted_at"],
         // createdAt: DateTime.parse(json["created_at"]),
         // updatedAt: DateTime.parse(json["updated_at"]),
@@ -122,7 +122,7 @@ class Data {
         loyaltyPoint: json["loyalty_point"],
         refCode: json["ref_code"],
         refBy: json["ref_by"],
-        tempToken: json["temp_token"],
+        // tempToken: json["temp_token"],
         currentLanguageKey: json["current_language_key"],
         roles: List<Role>.from(json["roles"].map((x) => Role.fromJson(x))),
       );
@@ -141,7 +141,7 @@ class Data {
         "is_active": isActive,
         "newsletter_subscribe": newsletterSubscribe,
         "is_verified": isVerified,
-        "verify_code": verifyCode,
+        // "verify_code": verifyCode,
         "deleted_at": deletedAt,
         // "created_at": createdAt.toIso8601String(),
         // "updated_at": updatedAt.toIso8601String(),
@@ -154,7 +154,7 @@ class Data {
         "loyalty_point": loyaltyPoint,
         "ref_code": refCode,
         "ref_by": refBy,
-        "temp_token": tempToken,
+        // "temp_token": tempToken,
         "current_language_key": currentLanguageKey,
         "roles": List<dynamic>.from(roles.map((x) => x.toJson())),
       };
