@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "690474442853",
+    "project_id": "foodfiesta-414305",
+    "storage_bucket": "foodfiesta-414305.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690474442853:android:a9d0fd413939570761e68c",
+        "android_client_info": {
+          "package_name": "com.example.foodapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjwGl1ObjStP9Ybir0g6lQELEB5nBHZNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690474442853:android:e49b86580716a82c61e68c",
+        "android_client_info": {
+          "package_name": "com.example.foodfestadeliverymen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjwGl1ObjStP9Ybir0g6lQELEB5nBHZNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690474442853:android:bdc5b79c27de601661e68c",
+        "android_client_info": {
+          "package_name": "com.example.foodfestarestaurant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjwGl1ObjStP9Ybir0g6lQELEB5nBHZNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

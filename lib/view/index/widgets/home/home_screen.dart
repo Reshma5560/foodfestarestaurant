@@ -20,11 +20,11 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final HomeController con = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterTop,
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
         resizeToAvoidBottomInset: true,
         body: Column(children: [
           CommonAppBar(
@@ -35,7 +35,8 @@ class HomeScreen extends StatelessWidget {
             },
           ),
           TabBar(
-            physics: const NeverScrollableScrollPhysics(),
+            // isScrollable: true,
+            padding: EdgeInsets.zero,
             automaticIndicatorColorAdjustment: false,
             controller: con.tabController,
             tabs: con.orderTabList,
@@ -58,21 +59,18 @@ class HomeScreen extends StatelessWidget {
                   return e.text == "Current Order"
                       ? RefreshIndicator(
                           onRefresh: () async {
-                            await DesktopRepository()
-                                .getCurrentOrderListAPI(isInitial: true);
+                            await DesktopRepository().getCurrentOrderListAPI(isInitial: true);
                           },
                           child: _currentOrderModule())
                       : e.text == "Request Order"
                           ? RefreshIndicator(
                               onRefresh: () async {
-                                await DesktopRepository()
-                                    .getRequestOrderListAPI(isInitial: true);
+                                await DesktopRepository().getRequestOrderListAPI(isInitial: true);
                               },
                               child: _requestOrderModule())
                           : RefreshIndicator(
                               onRefresh: () async {
-                                await DesktopRepository()
-                                    .getCompletedOrderListAPI(isInitial: true);
+                                await DesktopRepository().getCompletedOrderListAPI(isInitial: true);
                               },
                               child: _pastOrderModule());
                 }).toList()),
@@ -83,8 +81,7 @@ class HomeScreen extends StatelessWidget {
   Widget _currentOrderModule() {
     return Obx(() => con.isLoading.value
         ? ListView.builder(
-            padding: const EdgeInsets.all(defaultPadding)
-                .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+            padding: const EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
             shrinkWrap: true,
             itemCount: 8,
             itemBuilder: (BuildContext context, index) => const SimmerTile(),
@@ -106,15 +103,11 @@ class HomeScreen extends StatelessWidget {
                   var item = con.currentOrderListData[index];
                   return InkWell(
                     onTap: () {
-                      Get.toNamed(AppRoutes.orderDetailScreen,
-                          arguments: {'orderId': item.id});
+                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {'orderId': item.id});
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 3.h),
-                      decoration: BoxDecoration(
-                          color: AppColors.white,
-                          boxShadow: AppStyle.boxShadow(),
-                          borderRadius: BorderRadius.circular(10)),
+                      decoration: BoxDecoration(color: AppColors.white, boxShadow: AppStyle.boxShadow(), borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -122,18 +115,14 @@ class HomeScreen extends StatelessWidget {
                             item.invoiceNumber.toString(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp),
+                            style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
                           ),
                           Divider(
                             color: AppColors.greyBorderColor,
                           ),
                           RowModule(
                             title: "Receiver Name",
-                            subTitle:
-                                ": ${item.user?.firstName} ${item.user?.lastName}",
+                            subTitle: ": ${item.user?.firstName} ${item.user?.lastName}",
                           ),
                           RowModule(
                             title: "Receiver Contact No.",
@@ -142,10 +131,7 @@ class HomeScreen extends StatelessWidget {
                           RowModule(
                             title: "Order Status",
                             subTitle: ": ${item.orderStatus?.statusName}",
-                            customTextStyle: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12.sp),
+                            customTextStyle: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 12.sp),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -156,11 +142,7 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(
                               height: 30,
                               child: Row(
-                                children: [
-                                  Expanded(
-                                      child: _orderStatusDropDownModule(item)),
-                                  const Expanded(child: SizedBox())
-                                ],
+                                children: [Expanded(child: _orderStatusDropDownModule(item)), const Expanded(child: SizedBox())],
                               )),
                           SizedBox(
                             height: 10.h,
@@ -195,8 +177,7 @@ class HomeScreen extends StatelessWidget {
             Icons.keyboard_arrow_down_rounded,
             color: AppColors.grey,
           ),
-          items: con.getCurrentOrderStatusListData
-              .map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
+          items: con.getCurrentOrderStatusListData.map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
             // log("value.name ${value.countryName}");
             return DropdownMenuItem<CurrentOrderStatusDatum>(
               value: value,
@@ -220,17 +201,11 @@ class HomeScreen extends StatelessWidget {
           ),
           onChanged: (value) async {
             con.isLoading(true);
-            con.orderstatusDropDownValue.value =
-                value ?? CurrentOrderStatusDatum();
+            con.orderstatusDropDownValue.value = value ?? CurrentOrderStatusDatum();
             // con.stateList.clear();
             // con.stateList.add(StateList(stateName: 'Select state'));
 
-            DesktopRepository().updateOrderStatusApiCall(
-                isLoader: con.isLoading,
-                params: {
-                  "order_id": item.id,
-                  "order_status_id": value?.id ?? ""
-                });
+            DesktopRepository().updateOrderStatusApiCall(isLoader: con.isLoading, params: {"order_id": item.id, "order_status_id": value?.id ?? ""});
             con.isLoading(false);
           },
         ));
@@ -239,8 +214,7 @@ class HomeScreen extends StatelessWidget {
   Widget _requestOrderModule() {
     return Obx(() => con.isLoading.value
         ? ListView.builder(
-            padding: const EdgeInsets.all(defaultPadding)
-                .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+            padding: const EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
             shrinkWrap: true,
             itemCount: 8,
             itemBuilder: (BuildContext context, index) => const SimmerTile(),
@@ -264,34 +238,24 @@ class HomeScreen extends StatelessWidget {
                   RxBool isAccept = false.obs;
                   return InkWell(
                     onTap: () {
-                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {
-                        'orderId': item.id,
-                        'isAccept': isAccept.value
-                      });
+                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {'orderId': item.id, 'isAccept': isAccept.value});
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 3.h),
-                      decoration: BoxDecoration(
-                          color: AppColors.white,
-                          boxShadow: AppStyle.boxShadow(),
-                          borderRadius: BorderRadius.circular(10)),
+                      decoration: BoxDecoration(color: AppColors.white, boxShadow: AppStyle.boxShadow(), borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             item.invoiceNumber.toString(),
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp),
+                            style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
                           ),
                           Divider(
                             color: AppColors.greyBorderColor,
                           ),
                           RowModule(
                             title: "Receiver Name",
-                            subTitle:
-                                ": ${item.user?.firstName} ${item.user?.lastName}",
+                            subTitle: ": ${item.user?.firstName} ${item.user?.lastName}",
                           ),
                           RowModule(
                             title: "Receiver Contact No.",
@@ -300,10 +264,7 @@ class HomeScreen extends StatelessWidget {
                           RowModule(
                             title: "Order Status",
                             subTitle: ": ${item.orderStatus?.statusName}",
-                            customTextStyle: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12.sp),
+                            customTextStyle: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 12.sp),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -313,22 +274,16 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               ElevatedButton(
                                 style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
                                   ),
                                 ),
                                 onPressed: () {
-                                  var params = {
-                                    "order_id": item.id,
-                                    "status": 2
-                                  };
+                                  var params = {"order_id": item.id, "status": 2};
                                   DesktopRepository()
-                                      .acceptOrderApiCall(
-                                          isLoader: con.isLoading,
-                                          params: params)
+                                      .acceptOrderApiCall(isLoader: con.isLoading, params: params)
                                       .then((value) => isAccept.value = true);
                                 },
                                 child: const Text("Accept"),
@@ -338,22 +293,16 @@ class HomeScreen extends StatelessWidget {
                               ),
                               ElevatedButton(
                                 style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
                                   ),
                                 ),
                                 onPressed: () {
-                                  var params = {
-                                    "order_id": item.id,
-                                    "status": 3
-                                  };
+                                  var params = {"order_id": item.id, "status": 3};
                                   DesktopRepository()
-                                      .acceptOrderApiCall(
-                                          isLoader: con.isLoading,
-                                          params: params)
+                                      .acceptOrderApiCall(isLoader: con.isLoading, params: params)
                                       .then((value) => isAccept.value = true);
                                 },
                                 child: const Text("Reject"),
@@ -371,8 +320,7 @@ class HomeScreen extends StatelessWidget {
   Widget _pastOrderModule() {
     return Obx(() => con.isLoading.value
         ? ListView.builder(
-            padding: const EdgeInsets.all(defaultPadding)
-                .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+            padding: const EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
             shrinkWrap: true,
             itemCount: 8,
             itemBuilder: (BuildContext context, index) => const SimmerTile(),
@@ -394,27 +342,20 @@ class HomeScreen extends StatelessWidget {
                   var item = con.completeOrderListData[index];
                   return Container(
                     margin: EdgeInsets.symmetric(vertical: 3.h),
-                    decoration: BoxDecoration(
-                        color: AppColors.white,
-                        boxShadow: AppStyle.boxShadow(),
-                        borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(color: AppColors.white, boxShadow: AppStyle.boxShadow(), borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           item.invoiceNumber.toString(),
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14.sp),
+                          style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
                         ),
                         Divider(
                           color: AppColors.greyBorderColor,
                         ),
                         RowModule(
                           title: "Receiver Name",
-                          subTitle:
-                              ": ${item.user?.firstName} ${item.user?.lastName}",
+                          subTitle: ": ${item.user?.firstName} ${item.user?.lastName}",
                         ),
                         RowModule(
                           title: "Receiver Contact No.",
@@ -423,10 +364,7 @@ class HomeScreen extends StatelessWidget {
                         RowModule(
                           title: "Order Status",
                           subTitle: ": ${item.orderStatus?.statusName}",
-                          customTextStyle: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12.sp),
+                          customTextStyle: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 12.sp),
                         ),
                         SizedBox(
                           height: 10.h,

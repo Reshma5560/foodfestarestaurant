@@ -10,7 +10,7 @@ class FoodController extends GetxController {
 
   RxBool paginationLoading = false.obs;
   RxBool nextPageStop = true.obs;
-  RxInt page = 10.obs;
+  RxInt page = 1.obs;
 
   RxList<GetFoodDatum> getOrderDataList = <GetFoodDatum>[].obs;
 

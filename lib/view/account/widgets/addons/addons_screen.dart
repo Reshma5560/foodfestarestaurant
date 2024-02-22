@@ -24,236 +24,185 @@ class AddonsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          shape: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(color: Theme.of(context).primaryColor)),
-          onPressed: () {
-            con.isAdd.value = true;
-            _customAddAddonsdialog();
-          },
-          child: const Icon(Icons.add),
-        ),
-        body: TweenAnimationBuilder(
-            duration: const Duration(milliseconds: 1000),
-            curve: Curves.easeOutCubic,
-            tween: Tween(begin: 20.0, end: 1.0),
-            builder: (context, value, child) {
-              return AnimatedOpacity(
-                  opacity: value == 20 ? 0 : 1,
-                  duration: const Duration(milliseconds: 700),
-                  child: Column(children: [
-                    CommonAppBar(
-                      title: "Addon",
-                      isLeadingShow: true,
-                      onPressed: () {
-                        Get.back();
-                      },
-                    ),
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          await DesktopRepository().getAddonsListAPI(
-                              isLoader: con.isLoading, isInitial: true);
-                        },
-                        child: Obx(() => con.isLoading.value
-                            ? ListView.builder(
-                                padding: const EdgeInsets.all(defaultPadding)
-                                    .copyWith(
-                                        bottom: MediaQuery.of(Get.context!)
-                                            .padding
-                                            .bottom),
-                                shrinkWrap: true,
-                                itemCount: 8,
-                                itemBuilder: (BuildContext context, index) =>
-                                    const SimmerTile(),
-                              )
-                            : con.getAddonsDataList.isEmpty
-                                ? EmptyElement(
-                                    imagePath: AppAssets.noData,
-                                    height: Get.height / 1.8,
-                                    imageHeight: Get.width / 2.4,
-                                    imageWidth: Get.width / 2,
-                                    spacing: 0,
-                                    title: AppStrings.recordNotFound,
-                                    subtitle: "",
-                                  )
-                                : ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: con.getAddonsDataList.length,
-                                    // .getAddonsDataModel.value.data?.data?.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      var item = con.getAddonsDataList[index];
-                                      RxBool selectStatus = false.obs;
-                                      selectStatus.value =
-                                          item.isActive == 0 ? false : true;
-                                      return Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 10.w, vertical: 4.h),
-                                        // padding: const EdgeInsets.symmetric(),
-                                        // margin: EdgeInsets.symmetric(
-                                        //     vertical: 5.h, horizontal: 15.w),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .background,
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Colors.grey,
-                                              offset: Offset(0.0, 1.0), //(x,y)
-                                              blurRadius: 2.0,
-                                              blurStyle: BlurStyle.outer,
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        shape: OutlineInputBorder(borderRadius: BorderRadius.circular(50), borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+        onPressed: () {
+          con.isAdd.value = true;
+          _customAddAddonsdialog();
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: TweenAnimationBuilder(
+        duration: const Duration(milliseconds: 1000),
+        curve: Curves.easeOutCubic,
+        tween: Tween(begin: 20.0, end: 1.0),
+        builder: (context, value, child) {
+          return AnimatedOpacity(
+            opacity: value == 20 ? 0 : 1,
+            duration: const Duration(milliseconds: 700),
+            child: Column(
+              children: [
+                CommonAppBar(
+                  title: "Addon",
+                  isLeadingShow: true,
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await DesktopRepository().getAddonsListAPI(isInitial: true);
+                    },
+                    child: Obx(
+                      () => con.isLoading.value
+                          ? ListView.builder(
+                              padding: const EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+                              shrinkWrap: true,
+                              itemCount: 8,
+                              itemBuilder: (BuildContext context, index) => const SimmerTile(),
+                            )
+                          : con.getAddonsDataList.isEmpty
+                              ? EmptyElement(
+                                  imagePath: AppAssets.noData,
+                                  height: Get.height / 1.8,
+                                  imageHeight: Get.width / 2.4,
+                                  imageWidth: Get.width / 2,
+                                  spacing: 0,
+                                  title: AppStrings.recordNotFound,
+                                  subtitle: "",
+                                )
+                              : ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: con.getAddonsDataList.length,
+                                  // .getAddonsDataModel.value.data?.data?.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    var item = con.getAddonsDataList[index];
+                                    RxBool selectStatus = false.obs;
+                                    selectStatus.value = item.isActive == 0 ? false : true;
+                                    return Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                                      // padding: const EdgeInsets.symmetric(),
+                                      // margin: EdgeInsets.symmetric(
+                                      //     vertical: 5.h, horizontal: 15.w),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Theme.of(context).colorScheme.background,
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            offset: Offset(0.0, 1.0), //(x,y)
+                                            blurRadius: 2.0,
+                                            blurStyle: BlurStyle.outer,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // Image.network(
+                                          //   item?.image ?? "",
+                                          //   height: 100.h,
+                                          //   width: 100.w,
+                                          //   fit: BoxFit.cover,
+                                          // ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              item.addonName ?? "",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(fontWeight: FontWeight.w600),
                                             ),
-                                          ],
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            // Image.network(
-                                            //   item?.image ?? "",
-                                            //   height: 100.h,
-                                            //   width: 100.w,
-                                            //   fit: BoxFit.cover,
-                                            // ),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                item.addonName ?? "",
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              " ₹ ${(item.price ?? "")}",
+                                              style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 14.sp, fontWeight: FontWeight.w700),
                                             ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                " ₹ ${(item.price ?? "")}",
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Transform.scale(
-                                                scale: 0.6,
-                                                child: Obx(() => Switch(
-                                                      value: selectStatus.value,
-                                                      onChanged: (bool value1) {
-                                                        selectStatus.value =
-                                                            value1;
-                                                        var tempIsActive;
-                                                        if (selectStatus
-                                                                .value ==
-                                                            true) {
-                                                          tempIsActive = 1;
-                                                        } else {
-                                                          tempIsActive = 0;
-                                                        }
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Transform.scale(
+                                              scale: 0.6,
+                                              child: Obx(() => Switch(
+                                                    value: selectStatus.value,
+                                                    onChanged: (bool value1) {
+                                                      selectStatus.value = value1;
+                                                      var tempIsActive;
+                                                      if (selectStatus.value == true) {
+                                                        tempIsActive = 1;
+                                                      } else {
+                                                        tempIsActive = 0;
+                                                      }
 
-                                                        var params = {
-                                                          "is_active":
-                                                              tempIsActive
-                                                        };
+                                                      var params = {"is_active": tempIsActive};
 
-                                                        DesktopRepository()
-                                                            .updateAddonsStatusApiCall(
-                                                                item.id
-                                                                    .toString(),
-                                                                isLoader: con
-                                                                    .isLoading,
-                                                                params: params);
-                                                      },
-                                                    )),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Row(
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () {
-                                                      con.isAdd.value = false;
-                                                      _customAddAddonsdialog(
-                                                          name: item.addonName,
-                                                          price: item.price,
-                                                          addonId: item.id);
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColor),
-                                                      child: Icon(
-                                                        Icons.edit,
-                                                        size: 13.sp,
-                                                        color: AppColors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 6.w,
-                                                  ),
-                                                  InkWell(
-                                                    onTap: () {
                                                       DesktopRepository()
-                                                          .deleteAddonsApiCall(
-                                                              item.id
-                                                                  .toString(),
-                                                              isLoader: con
-                                                                  .isLoading);
+                                                          .updateAddonsStatusApiCall(item.id.toString(), isLoader: con.isLoading, params: params);
                                                     },
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor
-                                                                  .withOpacity(
-                                                                      0.3)),
-                                                      child: Icon(
-                                                        Icons.delete,
-                                                        size: 13.sp,
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                      ),
+                                                  )),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Row(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    con.isAdd.value = false;
+                                                    _customAddAddonsdialog(name: item.addonName, price: item.price, addonId: item.id);
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets.all(5),
+                                                    decoration:
+                                                        BoxDecoration(borderRadius: BorderRadius.circular(8), color: Theme.of(context).primaryColor),
+                                                    child: Icon(
+                                                      Icons.edit,
+                                                      size: 13.sp,
+                                                      color: AppColors.white,
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ).paddingSymmetric(
-                                            horizontal: 10.w, vertical: 5.h),
-                                      );
-                                    },
-                                  )),
-                      ),
-                    )
-                  ]));
-            }));
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 6.w,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    DesktopRepository().deleteAddonsApiCall(item.id.toString(), isLoader: con.isLoading);
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        color: Theme.of(context).primaryColor.withOpacity(0.3)),
+                                                    child: Icon(
+                                                      Icons.delete,
+                                                      size: 13.sp,
+                                                      color: Theme.of(context).primaryColor,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ).paddingSymmetric(horizontal: 10.w, vertical: 5.h),
+                                    );
+                                  },
+                                ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
   _customAddAddonsdialog({String? name, int? price, String? addonId}) {
@@ -273,8 +222,7 @@ class AddonsScreen extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(Get.context!).colorScheme.background,
-                  border: Border.all(
-                      width: 3, color: Theme.of(Get.context!).primaryColor),
+                  border: Border.all(width: 3, color: Theme.of(Get.context!).primaryColor),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(20),
                   ),
@@ -290,9 +238,7 @@ class AddonsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            name == null && price == null
-                                ? "Create Addon"
-                                : "Edit Addon",
+                            name == null && price == null ? "Create Addon" : "Edit Addon",
                             style: TextStyle(
                               // fontFamily: FontFamilyText.sFProDisplayRegular,
                               color: Theme.of(Get.context!).primaryColor,
@@ -306,9 +252,7 @@ class AddonsScreen extends StatelessWidget {
                             },
                             child: Container(
                               padding: const EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Theme.of(Get.context!).primaryColor),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Theme.of(Get.context!).primaryColor),
                               child: Icon(
                                 Icons.close,
                                 color: AppColors.white,
@@ -320,18 +264,13 @@ class AddonsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       AppTextField(
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16.r),
-                            borderSide: BorderSide(color: AppColors.white)),
+                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r), borderSide: BorderSide(color: AppColors.white)),
                         controller: con.nameCon.value,
                         // titleText: "Name*",
                         errorMessage: con.nameError.value,
                         showError: con.nameValidation.value,
                         hintText: "Item Name",
-                        hintStyle: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.hintColor),
+                        hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
                         onChanged: (value) {
                           con.nameValidation.value = false;
                         },
@@ -342,15 +281,10 @@ class AddonsScreen extends StatelessWidget {
                       AppTextField(
                         controller: con.priceCon.value,
                         // titleText: "Price*",
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16.r),
-                            borderSide: BorderSide(color: AppColors.white)),
+                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r), borderSide: BorderSide(color: AppColors.white)),
 
                         hintText: "Item Price",
-                        hintStyle: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.hintColor),
+                        hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
                         errorMessage: con.priceError.value,
                         showError: con.priceValidation.value,
                         onChanged: (value) {
@@ -371,8 +305,7 @@ class AddonsScreen extends StatelessWidget {
                             /// name validation
                             if (con.nameCon.value.text.trim().isEmpty) {
                               con.nameValidation.value = true;
-                              con.nameError.value =
-                                  "Please enter your addon name.";
+                              con.nameError.value = "Please enter your addon name.";
                             } else {
                               con.nameValidation.value = false;
                             }
@@ -387,27 +320,18 @@ class AddonsScreen extends StatelessWidget {
                               con.priceError.value = "";
                             }
 
-                            if (con.nameValidation.isFalse &&
-                                con.priceValidation.isFalse) {
-                              var params = {
-                                "addon_name": con.nameCon.value.text.trim(),
-                                "price": con.priceCon.value.text.trim()
-                              };
+                            if (con.nameValidation.isFalse && con.priceValidation.isFalse) {
+                              var params = {"addon_name": con.nameCon.value.text.trim(), "price": con.priceCon.value.text.trim()};
                               if (name != null && price != null) {
-                                DesktopRepository().updateAddonsApiCall(
-                                    addonId ?? "",
-                                    isLoader: con.isLoading,
-                                    params: params);
+                                DesktopRepository().updateAddonsApiCall(addonId ?? "", isLoader: con.isLoading, params: params);
                               } else {
-                                DesktopRepository().addAddonsApiCall(
-                                    isLoader: con.isLoading, params: params);
+                                DesktopRepository().addAddonsApiCall(isLoader: con.isLoading, params: params);
                               }
                             }
                           },
                           child: Text(
                             name == null && price == null ? "ADD" : "EDIT",
-                            style:
-                                TextStyle(color: AppColors.white, fontSize: 20),
+                            style: TextStyle(color: AppColors.white, fontSize: 20),
                           )),
                     ]),
                   ),

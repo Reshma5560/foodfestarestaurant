@@ -21,28 +21,25 @@ class AddonsController extends GetxController {
 
   RxBool paginationLoading = false.obs;
   RxBool nextPageStop = true.obs;
-  RxInt page = 10.obs;
+  RxInt page = 1.obs;
 
   RxBool isAdd = true.obs;
   ScrollController getAddonsListScrollController = ScrollController();
+
   @override
   Future<void> onReady() async {
-    await DesktopRepository()
-        .getAddonsListAPI(isLoader: isLoading, isInitial: true);
+    await DesktopRepository().getAddonsListAPI(isInitial: true);
     manageGetAddonsListListScrollController();
     super.onReady();
   }
 
   void manageGetAddonsListListScrollController() async {
     getAddonsListScrollController.addListener(
-      () {
-        if (getAddonsListScrollController.position.maxScrollExtent ==
-                getAddonsListScrollController.position.pixels &&
-            isLoading.isFalse) {
+      () async {
+        if (getAddonsListScrollController.position.maxScrollExtent == getAddonsListScrollController.position.pixels && isLoading.isFalse) {
           if (nextPageStop.isTrue && paginationLoading.isFalse) {
             paginationLoading.value = true;
-            DesktopRepository()
-                .getAddonsListAPI(isLoader: isLoading, isInitial: false);
+          await  DesktopRepository().getAddonsListAPI(isInitial: false);
           }
         }
       },

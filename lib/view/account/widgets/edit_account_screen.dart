@@ -15,6 +15,7 @@ class EditAccountScreen extends StatelessWidget {
   EditAccountScreen({super.key});
 
   final editAccountController = Get.put(EditAccountController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +54,7 @@ class EditAccountScreen extends StatelessWidget {
                       ),
                       controller: editAccountController.firstNameCon,
                       errorMessage: editAccountController.firstNameError.value,
-                      showError:
-                          editAccountController.firstNameValidation.value,
+                      showError: editAccountController.firstNameValidation.value,
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
                       onChanged: (value) {
@@ -81,7 +81,8 @@ class EditAccountScreen extends StatelessWidget {
                     SizedBox(height: 10.w),
                     AppTextField(
                       // titleText: "Email",
-                      hintText: "Enter Email", readOnly: true,
+                      hintText: "Enter Email",
+                      readOnly: true,
                       prefixIcon: Icon(
                         Icons.email,
                         color: AppColors.greyFontColor,
@@ -111,9 +112,7 @@ class EditAccountScreen extends StatelessWidget {
                         LengthLimitingTextInputFormatter(10),
                       ],
                       onChanged: (value) {
-                        if (editAccountController
-                                .mobileNumberCon.value.text.length ==
-                            10) {
+                        if (editAccountController.mobileNumberCon.value.text.length == 10) {
                           FocusScope.of(context).unfocus();
                         }
                         editAccountController.isMobileValid.value = false;
@@ -122,13 +121,16 @@ class EditAccountScreen extends StatelessWidget {
                     SizedBox(
                       height: 30.h,
                     ),
-                    AppButton(
-                      onPressed: () {
-                        DesktopRepository().editProfileApiCall(
-                          isLoader: editAccountController.isLoader,
-                        );
-                      },
-                      title: "Update",
+                    Obx(
+                      () => AppButton(
+                        loader: editAccountController.isLoader.value,
+                        onPressed: () {
+                          DesktopRepository().editProfileApiCall(
+                            isLoader: editAccountController.isLoader,
+                          );
+                        },
+                        title: "Update",
+                      ),
                     )
                   ],
                 ).paddingSymmetric(horizontal: 20))
