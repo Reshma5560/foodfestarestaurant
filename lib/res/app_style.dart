@@ -14,6 +14,11 @@ class AppStyle {
         fontWeight: FontWeight.w400,
       );
 
+  static TextStyle loginTitleStyle() => TextStyle(
+        color: AppColors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 25.sp,
+      );
   static TextStyle regularWhite() => TextStyle(
         fontSize: 14.sp,
         color: Colors.white,
@@ -77,7 +82,12 @@ class AppStyle {
         fontWeight: FontWeight.w600,
       );
 
-  static boxShadow({double? blurRadius, double? spreadRadius, Color? color, Offset? offset}) => [
+  static boxShadow(
+          {double? blurRadius,
+          double? spreadRadius,
+          Color? color,
+          Offset? offset}) =>
+      [
         BoxShadow(
           color: color ?? AppColors.blackColor.withOpacity(0.2),
           spreadRadius: spreadRadius ?? 1,
@@ -85,7 +95,13 @@ class AppStyle {
           offset: offset ?? const Offset(0, 3),
         ),
       ];
-  static Widget simmerContainer({double? height, double? width, double? borderRadius, Widget? child, Decoration? decoration}) => Container(
+  static Widget simmerContainer(
+          {double? height,
+          double? width,
+          double? borderRadius,
+          Widget? child,
+          Decoration? decoration}) =>
+      Container(
         height: height,
         width: width,
         decoration: decoration ??

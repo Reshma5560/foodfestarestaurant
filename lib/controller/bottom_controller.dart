@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/edit_account_screen.dart';
 import 'package:foodfestarestaurant/view/index/widgets/order/order_management_screen.dart';
 import 'package:get/get.dart';
 
-import '../view/account/account_screen.dart';
+import '../view/setting/setting_screen.dart';
 import '../view/index/widgets/home/home_screen.dart';
 
 class BottomController extends GetxController {
@@ -19,6 +20,7 @@ class BottomController extends GetxController {
   final pages = <Widget>[
     HomeScreen(),
     OrderManagementScreen(),
-    AccountScreen()
+    EditAccountScreen(),
+    SettingScreen()
   ];
 }

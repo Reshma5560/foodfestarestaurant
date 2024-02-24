@@ -2,7 +2,7 @@ import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foodfestarestaurant/controller/account/components/business_mangement_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/business_mangement_controller.dart';
 import 'package:foodfestarestaurant/res/app_appbar.dart';
 import 'package:foodfestarestaurant/res/app_button.dart';
 import 'package:foodfestarestaurant/res/app_colors.dart';
@@ -29,119 +29,159 @@ class BusinessManagementScreen extends StatelessWidget {
               return AnimatedOpacity(
                 opacity: value == 20 ? 0 : 1,
                 duration: const Duration(milliseconds: 700),
-                child: ListView(padding: EdgeInsets.zero, children: [
-                  CommonAppBar(
-                    title: "Restaurant Setup",
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10),
-                    width: Get.width,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Theme.of(context).primaryColor, width: 2),
-                        color: Theme.of(context).colorScheme.background,
-                        boxShadow: AppStyle.boxShadow(),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Obx(() => con.isLoader.isTrue
-                        ? const AppLoader()
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                                Row(
-                                  children: [
-                                    const Icon(Icons.settings),
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Text(
-                                      "Close Restaurant Temporarily ",
-                                      style: TextStyle(
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.sp),
-                                    ),
-                                    const Spacer(),
-                                    Transform.scale(
-                                      scale: 0.6,
-                                      child: Obx(() => Switch(
-                                            value: con.selectCloseRes.value,
-                                            onChanged: (bool value1) {
-                                              con.selectCloseRes.value = value1;
-                                            },
-                                          )),
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "General Setting",
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13.sp),
-                                ),
-                                SizedBox(
-                                  height: 17.h,
-                                ),
-                                _generalSettingModule(),
-                                SizedBox(
-                                  height: 17.h,
-                                ),
-                                Text(
-                                  "Basic Setting",
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13.sp),
-                                ),
-                                SizedBox(
-                                  height: 17.h,
-                                ),
-                                _basicSettingModule(),
-                                SizedBox(
-                                  height: 17.h,
-                                ),
-                                Text(
-                                  "Restaurant Meta Data",
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13.sp),
-                                ),
-                                SizedBox(
-                                  height: 17.h,
-                                ),
-                                _restaurantMetaDataodule(),
-                                SizedBox(
-                                  height: 17.h,
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: AppButton(
-                                    height: 30.h,
-                                    width: Get.width / 2,
-                                    onPressed: () {
-                                      Get.toNamed(AppRoutes
-                                          .businessManagementScheduleScreen);
-                                    },
-                                    child: Text(
-                                      "Next",
-                                      style: TextStyle(
-                                          color: AppColors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                )
-                              ])),
-                  ).paddingSymmetric(horizontal: 12.w, vertical: 10.h),
-                ]),
+                child: Stack(
+                  children: [
+                    Image.asset("assets/images/appbar_bg_img.png"),
+                    Column(
+                        // padding: EdgeInsets.zero,
+                        children: [
+                          CommonAppBar(
+                            title: "Restaurant Setup",
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                          Expanded(
+                            child: Container(
+                              child: Obx(() => con.isLoader.isTrue
+                                  ? const AppLoader()
+                                  : ListView(
+                                      padding: EdgeInsets.zero,
+                                      children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.w, vertical: 10),
+                                            width: Get.width,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    width: 2),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .background,
+                                                boxShadow: AppStyle.boxShadow(),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(Icons.settings),
+                                                    SizedBox(
+                                                      width: 2.w,
+                                                    ),
+                                                    Text(
+                                                      "Close Restaurant Temporarily ",
+                                                      style: TextStyle(
+                                                          color:
+                                                              AppColors.black,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 11.sp),
+                                                    ),
+                                                    const Spacer(),
+                                                    Transform.scale(
+                                                      scale: 0.6,
+                                                      child: Obx(() => Switch(
+                                                            value: con
+                                                                .selectCloseRes
+                                                                .value,
+                                                            onChanged:
+                                                                (bool value1) {
+                                                              con.selectCloseRes
+                                                                      .value =
+                                                                  value1;
+                                                            },
+                                                          )),
+                                                    )
+                                                  ],
+                                                ),
+                                                Text(
+                                                  "General Setting",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 13.sp),
+                                                ),
+                                                SizedBox(
+                                                  height: 17.h,
+                                                ),
+                                                _generalSettingModule(),
+                                                SizedBox(
+                                                  height: 17.h,
+                                                ),
+                                                Text(
+                                                  "Basic Setting",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 13.sp),
+                                                ),
+                                                SizedBox(
+                                                  height: 17.h,
+                                                ),
+                                                _basicSettingModule(),
+                                                SizedBox(
+                                                  height: 17.h,
+                                                ),
+                                                Text(
+                                                  "Restaurant Meta Data",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 13.sp),
+                                                ),
+                                                SizedBox(
+                                                  height: 17.h,
+                                                ),
+                                                _restaurantMetaDataodule(),
+                                                SizedBox(
+                                                  height: 17.h,
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: AppButton(
+                                                    height: 30.h,
+                                                    width: Get.width / 2,
+                                                    onPressed: () {
+                                                      Get.toNamed(AppRoutes
+                                                          .businessManagementScheduleScreen);
+                                                    },
+                                                    child: Text(
+                                                      "Next",
+                                                      style: TextStyle(
+                                                          color:
+                                                              AppColors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 15),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10.h,
+                                                )
+                                              ],
+                                            ).paddingSymmetric(
+                                                horizontal: 8.w,
+                                                vertical: 10.h),
+                                          ),
+                                        ])),
+                            ).paddingSymmetric(
+                                horizontal: 12.w, vertical: 10.h),
+                          ),
+                        ]),
+                  ],
+                ),
               );
             }));
   }
@@ -542,9 +582,9 @@ class BusinessManagementScreen extends StatelessWidget {
                               )
                             ],
                           ),
-                            Wrap(
-                              children: _buildChoiceList(),
-                            ),
+                          Wrap(
+                            children: _buildChoiceList(),
+                          ),
                           SizedBox(
                             height: 10.h,
                           ),

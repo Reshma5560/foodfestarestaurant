@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestarestaurant/common_widgets/simmer_tile.dart';
@@ -5,8 +7,8 @@ import 'package:foodfestarestaurant/controller/home/home_controller.dart';
 import 'package:foodfestarestaurant/data/models/cureent_order_status_model.dart';
 import 'package:foodfestarestaurant/data/models/current_order_model.dart';
 import 'package:foodfestarestaurant/repositories/desktop_repository.dart';
-import 'package:foodfestarestaurant/res/app_appbar.dart';
 import 'package:foodfestarestaurant/res/app_assets.dart';
+import 'package:foodfestarestaurant/res/app_button.dart';
 import 'package:foodfestarestaurant/res/app_colors.dart';
 import 'package:foodfestarestaurant/res/app_strings.dart';
 import 'package:foodfestarestaurant/res/app_style.dart';
@@ -26,58 +28,106 @@ class HomeScreen extends StatelessWidget {
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterTop,
         resizeToAvoidBottomInset: true,
-        body: Column(children: [
-          CommonAppBar(
-            title: "Orders",
-            isLeadingShow: false,
-            onPressed: () {
-              Get.back();
-            },
-          ),
-          TabBar(
-            physics: const NeverScrollableScrollPhysics(),
-            automaticIndicatorColorAdjustment: false,
-            controller: con.tabController,
-            tabs: con.orderTabList,
-            onTap: (value) {
-              con.tabIndex.value = value;
-              if (con.tabIndex.value == 0) {
-                DesktopRepository().getCurrentOrderListAPI(isInitial: true);
-              } else if (con.tabIndex.value == 1) {
-                DesktopRepository().getRequestOrderListAPI(isInitial: true);
-              } else if (con.tabIndex.value == 2) {
-                DesktopRepository().getCompletedOrderListAPI(isInitial: true);
-              }
-            },
-          ),
-          Expanded(
-            child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: con.tabController,
-                children: con.orderTabList.map((e) {
-                  return e.text == "Current Order"
-                      ? RefreshIndicator(
-                          onRefresh: () async {
-                            await DesktopRepository()
-                                .getCurrentOrderListAPI(isInitial: true);
-                          },
-                          child: _currentOrderModule())
-                      : e.text == "Request Order"
-                          ? RefreshIndicator(
-                              onRefresh: () async {
-                                await DesktopRepository()
-                                    .getRequestOrderListAPI(isInitial: true);
-                              },
-                              child: _requestOrderModule())
-                          : RefreshIndicator(
-                              onRefresh: () async {
-                                await DesktopRepository()
-                                    .getCompletedOrderListAPI(isInitial: true);
-                              },
-                              child: _pastOrderModule());
-                }).toList()),
-          ),
-        ]));
+        body: Stack(
+          children: [
+            Image.asset("assets/images/bg_shade.png"),
+            Column(children: [
+              SizedBox(
+                height: 15.h,
+              ),
+              Row(
+                children: [
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(9.r),
+                  //   child:
+                  //       //  Container(
+                  //       //   color: AppColors.black,
+                  //       //   height: 40.h,
+                  //       //   width: 40.w,`
+                  //       // )
+                  //       Image.network(
+                  //     "https://foodfiesta.omtecweb.com/storage/deliveryman_profile/${con.userImage.value}",
+                  //     // AppAssets.appLogo,
+                  //     fit: BoxFit.cover,
+                  //     height: 35.h,
+                  //     width: 40.w,
+                  //   ),
+                  // ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Welcome",
+                        style: TextStyle(
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.greyFontColor),
+                      ),
+                      Text(
+                        "${con.firstName.value} ${con.lastName.value}",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black),
+                      )
+                    ],
+                  )
+                ],
+              ).paddingSymmetric(horizontal: 10.w, vertical: 20.h),
+              _tabBarWidget(),
+              // TabBar(
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   automaticIndicatorColorAdjustment: false,
+              //   controller: con.tabController,
+              //   tabs: con.orderTabList,
+              //   onTap: (value) {
+              //     con.tabIndex.value = value;
+              //     if (con.tabIndex.value == 0) {
+              //       DesktopRepository().getCurrentOrderListAPI(isInitial: true);
+              //     } else if (con.tabIndex.value == 1) {
+              //       DesktopRepository().getRequestOrderListAPI(isInitial: true);
+              //     } else if (con.tabIndex.value == 2) {
+              //       DesktopRepository()
+              //           .getCompletedOrderListAPI(isInitial: true);
+              //     }
+              //   },
+              // ),
+              Obx(() => Expanded(
+                    child: TabBarView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        controller: con.tabController,
+                        children: con.orderTabList.map((e) {
+                          return con.tabIndex.value == 0
+                              ? RefreshIndicator(
+                                  onRefresh: () async {
+                                    await DesktopRepository()
+                                        .getCurrentOrderListAPI(
+                                            isInitial: true);
+                                  },
+                                  child: _currentOrderModule())
+                              : con.tabIndex.value == 1
+                                  ? RefreshIndicator(
+                                      onRefresh: () async {
+                                        await DesktopRepository()
+                                            .getRequestOrderListAPI(
+                                                isInitial: true);
+                                      },
+                                      child: _requestOrderModule())
+                                  : RefreshIndicator(
+                                      onRefresh: () async {
+                                        await DesktopRepository()
+                                            .getCompletedOrderListAPI(
+                                                isInitial: true);
+                                      },
+                                      child: _pastOrderModule());
+                        }).toList()),
+                  )),
+            ]),
+          ],
+        ));
   }
 
   Widget _currentOrderModule() {
@@ -100,6 +150,7 @@ class HomeScreen extends StatelessWidget {
                 subtitle: "",
               )
             : ListView.builder(
+                padding: EdgeInsets.zero,
                 controller: con.currentOrderScrollController,
                 itemCount: con.currentOrderListData.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -114,21 +165,36 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: AppColors.white,
                           boxShadow: AppStyle.boxShadow(),
+                          border: Border.all(
+                              color: Theme.of(context).primaryColor, width: 2),
                           borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            item.invoiceNumber.toString(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp),
+                          Row(
+                            children: [
+                              Text(
+                                "Order# ",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp),
+                              ),
+                              Text(
+                                item.invoiceNumber.toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp),
+                              ),
+                            ],
                           ),
                           Divider(
-                            color: AppColors.greyBorderColor,
+                            color: Theme.of(context).primaryColor,
                           ),
                           RowModule(
                             title: "Receiver Name",
@@ -175,25 +241,24 @@ class HomeScreen extends StatelessWidget {
 
   Widget _orderStatusDropDownModule(CurrentOrderDatum item) {
     return Obx(() => DropdownButtonFormField<CurrentOrderStatusDatum>(
-          // menuMaxHeight: 400,
-          decoration: InputDecoration(
-            fillColor: AppColors.white,
+         decoration: InputDecoration(
+            fillColor: Theme.of(Get.context!).primaryColor, //AppColors.white,
             filled: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 18.0),
             enabledBorder: OutlineInputBorder(
-              // borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(color: AppColors.grey),
             ),
             focusedBorder: OutlineInputBorder(
-              // borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(color: AppColors.grey),
             ),
           ),
           hint: const Text("Select Order status"),
           value: con.orderstatusDropDownValue.value,
           icon: Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: AppColors.grey,
+            Icons.arrow_drop_down,
+            color: AppColors.white,
           ),
           items: con.getCurrentOrderStatusListData
               .map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
@@ -203,7 +268,7 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 value.statusName ?? "",
                 style: TextStyle(
-                  color: AppColors.greyFontColor,
+                  color: AppColors.white,
                   fontSize: 11.sp,
                 ),
               ),
@@ -211,7 +276,7 @@ class HomeScreen extends StatelessWidget {
           }).toList(),
           isDense: true,
           isExpanded: false,
-          dropdownColor: AppColors.white,
+          dropdownColor: Theme.of(Get.context!).primaryColor,
           // underline: Container(height: 1, color: AppColors.blackColor),
           // borderRadius: const BorderRadius.all(Radius.circular(15)),
           style: TextStyle(
@@ -256,6 +321,7 @@ class HomeScreen extends StatelessWidget {
                 subtitle: "",
               )
             : ListView.builder(
+                padding: EdgeInsets.zero,
                 controller: con.requestOrderScrollController,
                 itemCount: con.requestOrderListData.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -274,19 +340,32 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: AppColors.white,
                           boxShadow: AppStyle.boxShadow(),
+                          border: Border.all(
+                              color: Theme.of(context).primaryColor, width: 2),
                           borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            item.invoiceNumber.toString(),
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp),
+                          Row(
+                            children: [
+                              Text(
+                                "Order# ",
+                                style: TextStyle(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp),
+                              ),
+                              Text(
+                                item.invoiceNumber.toString(),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp),
+                              ),
+                            ],
                           ),
                           Divider(
-                            color: AppColors.greyBorderColor,
+                            color: Theme.of(context).primaryColor,
                           ),
                           RowModule(
                             title: "Receiver Name",
@@ -311,52 +390,57 @@ class HomeScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
+                              const Expanded(child: SizedBox()),
+                              Expanded(
+                                child: AppButton(
+                                  height: 25.h,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  onPressed: () {
+                                    var params = {
+                                      "order_id": item.id,
+                                      "status": "order_confirmed"
+                                    };
+                                    DesktopRepository()
+                                        .acceptOrderApiCall(
+                                            isLoader: con.isLoading,
+                                            params: params)
+                                        .then((value) => isAccept.value = true);
+                                  },
+                                  child: Text(
+                                    "Accept",
+                                    style: TextStyle(
+                                        color: AppColors.white,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                onPressed: () {
-                                  var params = {
-                                    "order_id": item.id,
-                                    "status": 2
-                                  };
-                                  DesktopRepository()
-                                      .acceptOrderApiCall(
-                                          isLoader: con.isLoading,
-                                          params: params)
-                                      .then((value) => isAccept.value = true);
-                                },
-                                child: const Text("Accept"),
                               ),
                               SizedBox(
                                 width: 10.w,
                               ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
+                              Expanded(
+                                child: AppButton(
+                                  height: 25.h,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  onPressed: () {
+                                    var params = {
+                                      "order_id": item.id,
+                                      "status": "cancelled_by_restaurant"
+                                    };
+                                    DesktopRepository()
+                                        .acceptOrderApiCall(
+                                            isLoader: con.isLoading,
+                                            params: params)
+                                        .then((value) => isAccept.value = true);
+                                  },
+                                  child: Text(
+                                    "Reject",
+                                    style: TextStyle(
+                                        color: AppColors.white,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                onPressed: () {
-                                  var params = {
-                                    "order_id": item.id,
-                                    "status": 3
-                                  };
-                                  DesktopRepository()
-                                      .acceptOrderApiCall(
-                                          isLoader: con.isLoading,
-                                          params: params)
-                                      .then((value) => isAccept.value = true);
-                                },
-                                child: const Text("Reject"),
                               ),
                             ],
                           )
@@ -389,6 +473,7 @@ class HomeScreen extends StatelessWidget {
               )
             : ListView.builder(
                 controller: con.pastOrderScrollController,
+                padding: EdgeInsets.zero,
                 itemCount: con.completeOrderListData.length,
                 itemBuilder: (BuildContext context, int index) {
                   var item = con.completeOrderListData[index];
@@ -397,19 +482,32 @@ class HomeScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: AppColors.white,
                         boxShadow: AppStyle.boxShadow(),
+                        border: Border.all(
+                            color: Theme.of(context).primaryColor, width: 2),
                         borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          item.invoiceNumber.toString(),
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14.sp),
+                        Row(
+                          children: [
+                            Text(
+                              "Order# ",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14.sp),
+                            ),
+                            Text(
+                              item.invoiceNumber.toString(),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14.sp),
+                            ),
+                          ],
                         ),
                         Divider(
-                          color: AppColors.greyBorderColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                         RowModule(
                           title: "Receiver Name",
@@ -468,5 +566,105 @@ class HomeScreen extends StatelessWidget {
                   );
                 },
               ).paddingSymmetric(horizontal: 10.w, vertical: 5));
+  }
+
+  Widget _tabBarWidget() {
+    return Obx(() => Row(
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  con.tabIndex.value = 0;
+                  log(con.tabIndex.value.toString());
+                  DesktopRepository().getCurrentOrderListAPI(isInitial: true);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 7.h),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      border: Border.all(
+                          color: Theme.of(Get.context!).primaryColor),
+                      color: con.tabIndex.value == 0
+                          ? Theme.of(Get.context!).primaryColor
+                          : AppColors.white),
+                  child: Text(
+                    "Current Order",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.bold,
+                        color: con.tabIndex.value == 0
+                            ? AppColors.white
+                            : Theme.of(Get.context!).primaryColor),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  con.tabIndex.value = 1;
+                  log(con.tabIndex.value.toString());
+                  DesktopRepository().getRequestOrderListAPI(isInitial: true);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 7.h),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      border: Border.all(
+                          color: Theme.of(Get.context!).primaryColor),
+                      color: con.tabIndex.value == 1
+                          ? Theme.of(Get.context!).primaryColor
+                          : AppColors.white),
+                  child: Text(
+                    "Request Order",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.bold,
+                        color: con.tabIndex.value == 1
+                            ? AppColors.white
+                            : Theme.of(Get.context!).primaryColor),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  con.tabIndex.value = 2;
+                  log(con.tabIndex.value.toString());
+                  DesktopRepository().getCompletedOrderListAPI(isInitial: true);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 7.h),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      border: Border.all(
+                          color: Theme.of(Get.context!).primaryColor),
+                      color: con.tabIndex.value == 2
+                          ? Theme.of(Get.context!).primaryColor
+                          : AppColors.white),
+                  child: Text(
+                    "Complete Order",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.bold,
+                        color: con.tabIndex.value == 2
+                            ? AppColors.white
+                            : Theme.of(Get.context!).primaryColor),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ).paddingSymmetric(horizontal: 10.w));
   }
 }

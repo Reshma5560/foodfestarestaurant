@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:foodfestarestaurant/data/models/get_profile_model.dart';
+import 'package:foodfestarestaurant/repositories/desktop_repository.dart';
 import 'package:foodfestarestaurant/res/app_colors.dart';
 import 'package:foodfestarestaurant/res/color_print.dart';
 import 'package:get/get.dart';
@@ -27,6 +29,8 @@ class EditAccountController extends GetxController {
 
   File? apiImage;
   RxString imagePath = "".obs;
+
+  GetProfileModel? getDataMap;
 
   showImagePickerBottomSheet() {
     showModalBottomSheet<dynamic>(
@@ -112,14 +116,20 @@ class EditAccountController extends GetxController {
   }
 
   @override
+  void onReady() {
+    DesktopRepository().getProfileApiCall(isLoader: isLoader);
+    super.onReady();
+  }
+
+  @override
   void onInit() {
-    if (Get.arguments != null) {
-      image.value = Get.arguments['image'];
-      firstNameCon.text = Get.arguments['firstName'];
-      lastNameCon.text = Get.arguments['lastName'];
-      emailCon.text = Get.arguments['email'] ?? "";
-      mobileNumberCon.text = Get.arguments['mobileNo'];
-    }
+    // if (Get.arguments != null) {
+    //   image.value = Get.arguments['image'];
+    //   firstNameCon.text = Get.arguments['firstName'];
+    //   lastNameCon.text = Get.arguments['lastName'];
+    //   emailCon.text = Get.arguments['email'] ?? "";
+    //   mobileNumberCon.text = Get.arguments['mobileNo'];
+    // }
 
     super.onInit();
   }

@@ -26,66 +26,78 @@ class BottomScreen extends StatelessWidget {
           () => indexScreenController.isLoading.value
               ? Container()
               : Container(
+                  height: 40.h,
+                  margin:
+                      EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
+
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background,
                     border: Border.all(color: Colors.transparent),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
-                        color: Colors.grey.shade400,
-                        offset: const Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 2.0,
+                        color: Colors.grey,
+                        offset: Offset(0.0, 1.0), //(x,y)
+                        blurRadius: 3.0,
                         blurStyle: BlurStyle.outer,
                       ),
                     ],
                     borderRadius: BorderRadius.circular(30.0),
                   ), // decoration class
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
-                    ),
+                    borderRadius: BorderRadius.circular(25.r),
                     child: BottomNavigationBar(
                       backgroundColor: Theme.of(context).colorScheme.background,
                       type: BottomNavigationBarType.fixed,
-                      selectedLabelStyle: const TextStyle(
-                        fontSize: 10,
-                        // color: finalPrimaryColor,
+                      selectedLabelStyle: TextStyle(
+                        fontSize: 8.sp,
                       ),
-                      showSelectedLabels: false,
+                      selectedItemColor: Theme.of(context).primaryColor,
+                      showSelectedLabels: true,
                       showUnselectedLabels: false,
                       items: <BottomNavigationBarItem>[
                         BottomNavigationBarItem(
                           icon: Image.asset(
                             AppAssets.homeIcon,
-                            height: 18.w,
+                            height: 14..h,
                             color:
                                 indexScreenController.selectedIndex.value == 0
                                     ? Theme.of(context).primaryColor
-                                    : AppColors.black.withOpacity(0.4),
+                                    : AppColors.unselectedIconColor,
                           ),
                           label: "Home",
                         ),
                         BottomNavigationBarItem(
                           icon: Image.asset(
-                            AppAssets.categoryIcon,
-                            height: 18.w,
+                            AppAssets.orderIcon,
+                            height: 14.h,
                             color:
                                 indexScreenController.selectedIndex.value == 1
                                     ? Theme.of(context).primaryColor
-                                    : AppColors.black.withOpacity(0.4),
+                                    : AppColors.unselectedIconColor,
                           ),
-                          label: "Food",
+                          label: "Order",
                         ),
                         BottomNavigationBarItem(
                           icon: Image.asset(
                             AppAssets.profileIcon,
                             color:
-                                indexScreenController.selectedIndex.value == 4
+                                indexScreenController.selectedIndex.value == 2
                                     ? Theme.of(context).primaryColor
-                                    : AppColors.black.withOpacity(0.4),
-                            height: 18.w,
+                                    : AppColors.unselectedIconColor,
+                            height: 14.h,
                           ),
                           label: "Profile",
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Image.asset(
+                            AppAssets.settingIcon,
+                            color:
+                                indexScreenController.selectedIndex.value == 3
+                                    ? Theme.of(context).primaryColor
+                                    : AppColors.unselectedIconColor,
+                            height: 14.h,
+                          ),
+                          label: "Setting",
                         ),
                       ],
                       currentIndex: indexScreenController.selectedIndex.value,

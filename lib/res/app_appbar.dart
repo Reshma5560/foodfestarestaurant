@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:foodfestarestaurant/res/widgets/app_bar.dart';
 
 import 'app_colors.dart';
 import 'app_style.dart';
 
 class CommonAppBar extends StatelessWidget {
   final String title;
-  final bool? isLeadingShow;
+  final bool isLeadingShow;
   final void Function()? onPressed;
 
   const CommonAppBar({
@@ -18,24 +17,21 @@ class CommonAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(defaultRadius * 3),
-        bottomRight: Radius.circular(defaultRadius * 3),
-      ),
-      child: MyAppBar(
-        bgColor: Theme.of(context).colorScheme.background,
-        leading: isLeadingShow == true
-            ? IconButton(
-                icon: Icon(Icons.arrow_back_outlined, color: AppColors.black
-                    // Theme.of(context).primaryColor,
-                    ),
-                onPressed: onPressed,
-              )
-            : null,
-        title: title,
-        centerTitle: true,
-        titleStyle:
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      leading: isLeadingShow
+          ? IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_outlined,
+                color: AppColors.black,
+              ),
+              onPressed: onPressed,
+            )
+          : null,
+      title: Text(
+        title,
+        style:
             AppStyle.customAppBarTitleStyle().copyWith(color: AppColors.black),
       ),
     );

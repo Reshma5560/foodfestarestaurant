@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestarestaurant/res/app_colors.dart';
-import 'package:foodfestarestaurant/res/app_style.dart';
 import 'package:get/get.dart';
 
 class CustomListTile extends StatelessWidget {
@@ -9,27 +8,33 @@ class CustomListTile extends StatelessWidget {
   final String title;
   final void Function()? onPressed;
 
-  const CustomListTile({super.key, required this.icon, required this.title, this.onPressed});
+  const CustomListTile(
+      {super.key, required this.icon, required this.title, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child: Row(children: [
-        Icon(
-          icon,
-          size: 24,
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        Expanded(child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14))),
-        Icon(
-          Icons.arrow_forward_ios,
-          size: defaultPadding,
-          color: AppColors.greyFontColor,
-        ),
-      ]).paddingSymmetric(horizontal: defaultPadding, vertical: 4),
+      child: Container(
+        // padding: EdgeInsets.symmetric(vertical: 2.h),
+        decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+            borderRadius: BorderRadius.circular(12.r),
+            color: AppColors.white),
+        child: Row(children: [
+          Expanded(
+              child: Text(title,
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14))),
+          Icon(
+            Icons.arrow_right,
+            size: 30.h,
+            color: Theme.of(context).primaryColor,
+          ),
+        ]).paddingSymmetric(horizontal: 10.w, vertical: 2.h),
+      ),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:foodfestarestaurant/repositories/desktop_repository.dart';
 import 'package:get/get.dart';
 import '../../data/models/get_profile_model.dart';
 
-class ProfileController extends GetxController {
+class SettingController extends GetxController {
   RxBool isLoader = false.obs;
 
   RxString userApiImageFile = "".obs;

@@ -1,16 +1,15 @@
-import 'package:foodfestarestaurant/view/account/widgets/addons/addons_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/business%20management/business_management_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/business%20management/widget/business_management_schedule_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/display_customer_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/display_delivery_man_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/edit_account_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/food/food_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/my_earning_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/update_password_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/addons/addons_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/business%20management/business_management_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/business%20management/widget/business_management_schedule_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/display_customer_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/display_delivery_man_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/edit_account_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/food/food_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/my_earning_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/update_password_screen.dart';
 import 'package:foodfestarestaurant/view/auth/forgot_password_screen.dart';
 import 'package:foodfestarestaurant/view/index/bottom_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/food/widget/add_food_screen.dart';
-import 'package:foodfestarestaurant/view/account/widgets/food/widget/food_detail_screen.dart';
+import 'package:foodfestarestaurant/view/setting/widgets/food/widget/add_food_screen.dart';
 import 'package:foodfestarestaurant/view/index/widgets/home/widget/order_detail_screen.dart';
 import 'package:foodfestarestaurant/view/index/widgets/order/widget/order_management_detail_screen.dart';
 import 'package:get/get.dart';
@@ -56,10 +55,6 @@ class AppPages {
     GetPage(
       name: AppRoutes.displayCustomerScreen,
       page: () => DisplayCustomerScreen(),
-    ),
-    GetPage(
-      name: AppRoutes.foodDetailsScreen,
-      page: () => FoodDetailsScreen(),
     ),
     GetPage(
       name: AppRoutes.addFoodScreen,

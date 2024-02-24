@@ -3,12 +3,11 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart' as dio;
-import 'package:foodfestarestaurant/controller/account/account_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/edit_account_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/addons/addons_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/food/components/add_food_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/food/components/food_details_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/food/food_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/edit_account_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/addons/addons_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/food/components/add_food_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/food/components/food_details_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/food/food_controller.dart';
 import 'package:foodfestarestaurant/controller/home/home_controller.dart';
 import 'package:foodfestarestaurant/controller/order_management_controller.dart';
 import 'package:foodfestarestaurant/data/api/api_function.dart';
@@ -28,6 +27,7 @@ import 'package:foodfestarestaurant/data/models/request_order_model.dart';
 import 'package:foodfestarestaurant/res/color_print.dart';
 import 'package:foodfestarestaurant/res/ui_utils.dart';
 import 'package:foodfestarestaurant/route/app_routes.dart';
+import 'package:foodfestarestaurant/utils/local_storage.dart';
 import 'package:foodfestarestaurant/utils/utils.dart';
 import 'package:get/get.dart';
 
@@ -35,7 +35,7 @@ import '../data/handler/api_url.dart';
 
 class DesktopRepository {
   Future<dynamic> getProfileApiCall({RxBool? isLoader}) async {
-    final con = Get.find<ProfileController>();
+    final con = Get.find<EditAccountController>();
 
     try {
       isLoader?.value = true;
@@ -46,14 +46,12 @@ class DesktopRepository {
             GetProfileModel data = GetProfileModel.fromJson(response);
 
             con.getDataMap = data;
-            con.userApiImageFile.value = con.getDataMap?.data.image ?? "";
-
-            con.userName.value =
-                "${con.getDataMap?.data.firstName} ${con.getDataMap?.data.lastName}";
-            con.phoneNoName.value = con.getDataMap?.data.phone ?? "";
-            con.firstName.value = con.getDataMap?.data.firstName ?? "";
-            con.lastName.value = con.getDataMap?.data.lastName ?? "";
-            con.email.value = con.getDataMap?.data.email ?? "";
+            con.image.value = con.getDataMap?.data.image ?? "";
+            con.firstNameCon.text = con.getDataMap?.data.firstName ?? "";
+            con.lastNameCon.text = con.getDataMap?.data.lastName ?? "";
+            con.emailCon.text =
+                con.getDataMap?.data.email ?? LocalStorage.loginEmail.value;
+            con.mobileNumberCon.text = con.getDataMap?.data.phone ?? "";
             log("${con.getDataMap}");
           }
           return response;
@@ -109,35 +107,34 @@ class DesktopRepository {
     }
   }
 
+  
   ///get current order list api
   Future<dynamic> getCurrentOrderListAPI({required bool isInitial}) async {
     final HomeController con = Get.find<HomeController>();
     try {
       if (await getConnectivityResult()) {
-        con.currentOrderListData.clear();
         if (isInitial) {
-          con.page.value = 5;
+          con.currentOrderListData.clear();
+          con.page.value = 1;
           con.isLoading.value = true;
           con.nextPageStop.value = true;
         }
 
         if (con.nextPageStop.isTrue) {
-          await APIFunction()
-              .getApiCall(
-                  apiName:
-                      "${ApiUrls.restaurantUrl}${ApiUrls.getCurrentOrderUrl}?per_page=${con.page.value}")
-              .then(
+          await APIFunction().getApiCall(
+              apiName: "${ApiUrls.restaurantUrl}${ApiUrls.getCurrentOrderUrl}",
+              queryParameters: {
+                "per_page": 20,
+                "page": con.page.value,
+              }).then(
             (response) async {
+              printData(key: "current order response", value: response);
               CurrentOrderModel currentOrderModel =
                   CurrentOrderModel.fromJson(response);
 
-              currentOrderModel.data?.data?.forEach((element) {
-                // log("-------------${element.restaurant}");
-                // log("-------------${element.restaurant != null}");
-                con.currentOrderListData.add(element);
-              });
+              con.currentOrderListData.value =
+                  currentOrderModel.data?.data ?? [];
 
-              // con.currentOrderListData.refresh();
               con.page.value++;
               printData(
                   key: "current order length",
@@ -160,33 +157,87 @@ class DesktopRepository {
     }
   }
 
+
+
+  // ///get current order list api
+  // Future<dynamic> getCurrentOrderListAPI({required bool isInitial}) async {
+  //   final HomeController con = Get.find<HomeController>();
+  //   try {
+  //     if (await getConnectivityResult()) {
+  //       con.currentOrderListData.clear();
+  //       if (isInitial) {
+  //         con.page.value = 1;
+  //         con.isLoading.value = true;
+  //         con.nextPageStop.value = true;
+  //       }
+
+  //       if (con.nextPageStop.isTrue) {
+  //         await APIFunction()
+  //             .getApiCall(
+  //                 apiName:
+  //                     "${ApiUrls.restaurantUrl}${ApiUrls.getCurrentOrderUrl}?per_page=${con.page.value}")
+  //             .then(
+  //           (response) async {
+  //             CurrentOrderModel currentOrderModel =
+  //                 CurrentOrderModel.fromJson(response);
+
+  //             currentOrderModel.data?.data?.forEach((element) {
+  //               // log("-------------${element.restaurant}");
+  //               // log("-------------${element.restaurant != null}");
+  //               con.currentOrderListData.add(element);
+  //             });
+
+  //             // con.currentOrderListData.refresh();
+  //             con.page.value++;
+  //             printData(
+  //                 key: "current order length",
+  //                 value: con.currentOrderListData.length);
+  //             if (con.currentOrderListData.length ==
+  //                 currentOrderModel.data?.total) {
+  //               con.nextPageStop.value = false;
+  //             }
+  //             await getCurrentOrderStatusListApiCall(isLoader: con.isLoading);
+  //             return response;
+  //           },
+  //         );
+  //       }
+  //     }
+  //   } catch (e) {
+  //     printError(type: this, errText: "$e");
+  //   } finally {
+  //     con.isLoading.value = false;
+  //     con.paginationLoading.value = false;
+  //   }
+  // }
+
+
+
   ///get request order list api
   Future<dynamic> getRequestOrderListAPI({required bool isInitial}) async {
     final HomeController con = Get.find<HomeController>();
     try {
       if (await getConnectivityResult()) {
-        con.requestOrderListData.clear();
         if (isInitial) {
-          con.page.value = 2;
+          con.requestOrderListData.clear();
+          con.page.value = 1;
           con.isLoading.value = true;
           con.nextPageStop.value = true;
         }
 
         if (con.nextPageStop.isTrue) {
-          await APIFunction()
-              .getApiCall(
-                  apiName:
-                      "${ApiUrls.restaurantUrl}${ApiUrls.getRequestOrderUrl}?per_page=${con.page.value}")
-              .then(
+          await APIFunction().getApiCall(
+              apiName: "${ApiUrls.restaurantUrl}${ApiUrls.getRequestOrderUrl}",
+              queryParameters: {
+                "per_page": 20,
+                "page": con.page.value,
+              }).then(
             (response) async {
+              printData(key: "request order response", value: response);
               RequestOrderModel requestOrderModel =
                   RequestOrderModel.fromJson(response);
 
-              requestOrderModel.data?.data?.forEach((element) {
-                con.requestOrderListData.add(element);
-              });
-              con.requestOrderListData.refresh();
-
+              con.requestOrderListData.value +=
+                  requestOrderModel.data?.data ?? [];
               con.page.value++;
               printData(
                   key: "request order length",
@@ -195,7 +246,6 @@ class DesktopRepository {
                   requestOrderModel.data?.total) {
                 con.nextPageStop.value = false;
               }
-
               return response;
             },
           );
@@ -208,40 +258,135 @@ class DesktopRepository {
       con.paginationLoading.value = false;
     }
   }
+  // ///get request order list api
+  // Future<dynamic> getRequestOrderListAPI({required bool isInitial}) async {
+  //   final HomeController con = Get.find<HomeController>();
+  //   try {
+  //     if (await getConnectivityResult()) {
+  //       con.requestOrderListData.clear();
+  //       if (isInitial) {
+  //         con.page.value = 1;
+  //         con.isLoading.value = true;
+  //         con.nextPageStop.value = true;
+  //       }
+
+  //       if (con.nextPageStop.isTrue) {
+  //         await APIFunction()
+  //             .getApiCall(
+  //                 apiName:
+  //                     "${ApiUrls.restaurantUrl}${ApiUrls.getRequestOrderUrl}?per_page=${con.page.value}")
+  //             .then(
+  //           (response) async {
+  //             RequestOrderModel requestOrderModel =
+  //                 RequestOrderModel.fromJson(response);
+
+  //             requestOrderModel.data?.data?.forEach((element) {
+  //               con.requestOrderListData.add(element);
+  //             });
+  //             con.requestOrderListData.refresh();
+
+  //             con.page.value++;
+  //             printData(
+  //                 key: "request order length",
+  //                 value: con.requestOrderListData.length);
+  //             if (con.requestOrderListData.length ==
+  //                 requestOrderModel.data?.total) {
+  //               con.nextPageStop.value = false;
+  //             }
+
+  //             return response;
+  //           },
+  //         );
+  //       }
+  //     }
+  //   } catch (e) {
+  //     printError(type: this, errText: "$e");
+  //   } finally {
+  //     con.isLoading.value = false;
+  //     con.paginationLoading.value = false;
+  //   }
+  // }
+
+  // ///get completed order list api
+  // Future<dynamic> getCompletedOrderListAPI({required bool isInitial}) async {
+  //   final HomeController con = Get.find<HomeController>();
+  //   try {
+  //     if (await getConnectivityResult()) {
+  //       con.completeOrderListData.clear();
+  //       if (isInitial) {
+  //         con.page.value = 1;
+  //         con.isLoading.value = true;
+  //         con.nextPageStop.value = true;
+  //       }
+
+  //       if (con.nextPageStop.isTrue) {
+  //         await APIFunction()
+  //             .getApiCall(
+  //                 apiName:
+  //                     "${ApiUrls.restaurantUrl}${ApiUrls.getCompleteOrderUrl}?page=${con.page.value}")
+  //             .then(
+  //           (response) async {
+  //             CompleteOrderModel pastOrderModel =
+  //                 CompleteOrderModel.fromJson(response);
+
+  //             pastOrderModel.data?.data?.forEach((element) {
+  //               con.completeOrderListData.add(element);
+  //             });
+  //             con.completeOrderListData.refresh();
+
+  //             con.page.value++;
+  //             printData(
+  //                 key: "completed order length",
+  //                 value: con.completeOrderListData.length);
+  //             if (con.completeOrderListData.length ==
+  //                 pastOrderModel.data?.total) {
+  //               con.nextPageStop.value = false;
+  //             }
+  //             return response;
+  //           },
+  //         );
+  //       }
+  //     }
+  //   } catch (e) {
+  //     printError(type: this, errText: "$e");
+  //   } finally {
+  //     con.isLoading.value = false;
+  //     con.paginationLoading.value = false;
+  //   }
+  // }
 
   ///get completed order list api
   Future<dynamic> getCompletedOrderListAPI({required bool isInitial}) async {
     final HomeController con = Get.find<HomeController>();
     try {
       if (await getConnectivityResult()) {
-        con.completeOrderListData.clear();
         if (isInitial) {
-          con.page.value = 2;
+          con.completeOrderListData.clear();
+          con.page.value = 1;
           con.isLoading.value = true;
           con.nextPageStop.value = true;
         }
 
         if (con.nextPageStop.isTrue) {
-          await APIFunction()
-              .getApiCall(
-                  apiName:
-                      "${ApiUrls.restaurantUrl}${ApiUrls.getCompleteOrderUrl}?page=${con.page.value}")
-              .then(
+          await APIFunction().getApiCall(
+              apiName: "${ApiUrls.restaurantUrl}${ApiUrls.getCompleteOrderUrl}",
+              queryParameters: {
+                "per_page": 20,
+                "page": con.page.value,
+              }).then(
             (response) async {
-              CompleteOrderModel pastOrderModel =
+              printData(key: "complete order response", value: response);
+           CompleteOrderModel completeOrderModel =
                   CompleteOrderModel.fromJson(response);
 
-              pastOrderModel.data?.data?.forEach((element) {
-                con.completeOrderListData.add(element);
-              });
-              con.completeOrderListData.refresh();
-
+              con.completeOrderListData.value +=
+                  completeOrderModel.data?.data ?? [];
               con.page.value++;
               printData(
-                  key: "completed order length",
+                  key: "complete order length",
                   value: con.completeOrderListData.length);
               if (con.completeOrderListData.length ==
-                  pastOrderModel.data?.total) {
+                  completeOrderModel.data?.total) {
                 con.nextPageStop.value = false;
               }
               return response;

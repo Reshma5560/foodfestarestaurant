@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foodfestarestaurant/controller/account/components/business_management_schedule_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/business_management_schedule_controller.dart';
 import 'package:foodfestarestaurant/repositories/account_repositories.dart';
 import 'package:foodfestarestaurant/res/app_appbar.dart';
 import 'package:foodfestarestaurant/res/app_button.dart';
@@ -26,95 +26,105 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
           return AnimatedOpacity(
             opacity: value == 20 ? 0 : 1,
             duration: const Duration(milliseconds: 700),
-            child: ListView(padding: EdgeInsets.zero, children: [
-              CommonAppBar(
-                title: "Restaurant Setup",
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-              Obx(
-                () => con.isLoader.isTrue
-                    ? const AppLoader()
-                    : Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 10.h),
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 2),
-                            color: Theme.of(context).colorScheme.background,
-                            boxShadow: AppStyle.boxShadow(),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Restaurant Open & Close Time",
-                                style: TextStyle(
+            child: Stack(
+              children: [
+                Image.asset("assets/images/appbar_bg_img.png"),
+                ListView(padding: EdgeInsets.zero, children: [
+                  CommonAppBar(
+                    title: "Restaurant Setup",
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                  Obx(
+                    () => con.isLoader.isTrue
+                        ? const AppLoader()
+                        : Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 10.h),
+                            width: Get.width,
+                            decoration: BoxDecoration(
+                                border: Border.all(
                                     color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13.sp),
-                              ),
-                              SizedBox(height: 5.h),
-                              _scheduleModule(),
-                              SizedBox(height: 5.h),
-                              Row(
+                                    width: 2),
+                                color: Theme.of(context).colorScheme.background,
+                                boxShadow: AppStyle.boxShadow(),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                      child: AppButton(
-                                    height: 32.h,
-                                    buttonType: ButtonType.outline,
-                                    borderWidth: 2,
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .background,
-                                    borderColor: Theme.of(context).primaryColor,
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                    child: Text(
-                                      "Back",
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 13.sp),
-                                    ),
-                                  )),
-                                  SizedBox(
-                                    width: 10.w,
+                                  Text(
+                                    "Restaurant Open & Close Time",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13.sp),
                                   ),
-                                  Expanded(
-                                      child: AppButton(
-                                    height: 32.h,
-                                    buttonType: ButtonType.outline,
-                                    borderWidth: 2,
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    borderColor: Theme.of(context).primaryColor,
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    onPressed: () {
-                                      AccountRepository()
-                                          .addRestaurantDetailSettingApiCall(
-                                              isLoader: con.isLoader);
-                                    },
-                                    child: Text(
-                                      "Save Change",
-                                      style: TextStyle(
-                                          color: AppColors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 13.sp),
-                                    ),
-                                  ))
-                                ],
-                              ),
-                              SizedBox(height: 5.h),
-                            ]),
-                      ).paddingSymmetric(horizontal: 12.w, vertical: 10.h),
-              ),
-            ]),
+                                  SizedBox(height: 5.h),
+                                  _scheduleModule(),
+                                  SizedBox(height: 5.h),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: AppButton(
+                                        height: 32.h,
+                                        buttonType: ButtonType.outline,
+                                        borderWidth: 2,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .background,
+                                        borderColor:
+                                            Theme.of(context).primaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        child: Text(
+                                          "Back",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 13.sp),
+                                        ),
+                                      )),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Expanded(
+                                          child: AppButton(
+                                        height: 32.h,
+                                        buttonType: ButtonType.outline,
+                                        borderWidth: 2,
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        borderColor:
+                                            Theme.of(context).primaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                        onPressed: () {
+                                          AccountRepository()
+                                              .addRestaurantDetailSettingApiCall(
+                                                  isLoader: con.isLoader);
+                                        },
+                                        child: Text(
+                                          "Save Change",
+                                          style: TextStyle(
+                                              color: AppColors.white,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 13.sp),
+                                        ),
+                                      ))
+                                    ],
+                                  ),
+                                  SizedBox(height: 5.h),
+                                ]),
+                          ).paddingSymmetric(horizontal: 12.w, vertical: 10.h),
+                  ),
+                ]),
+              ],
+            ),
           );
         },
       ),

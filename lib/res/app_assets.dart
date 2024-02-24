@@ -8,8 +8,9 @@ class AppAssets {
   static String infoProfileIcon = '${iconPath}info_profile_icon.png';
 
   static String homeIcon = '${iconPath}ic_home.png';
-  static String categoryIcon = '${iconPath}ic_category.png';
-  static String profileIcon = '${iconPath}ic_profile.png';
+  static String orderIcon = '${iconPath}ic_order.png';
+  static String profileIcon = '${iconPath}profile_icon.png';
+  static String settingIcon = "${iconPath}setting_icon.png";
 
   /// IMAGES ///
   static String appLogo = '${imagesPath}app_logo.png';
@@ -22,6 +23,8 @@ class AppAssets {
   static String penWithdrawImg = '${imagesPath}pending_withdraw.png';
   static String earningImg = '${imagesPath}total_earning.png';
   static String totalWithdrawImg = '${imagesPath}total_withdraw.png';
+  static String bgImage = '${imagesPath}bg_image.png';
+  static String bgLogo = '${imagesPath}bg_logo.png';
 
   /// SVG ///
 

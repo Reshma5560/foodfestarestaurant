@@ -20,11 +20,9 @@ class LoginController extends GetxController {
   RxBool buttonPress = false.obs;
   RxBool isLoading = false.obs;
 
-  
   RxBool isRemeber = false.obs;
-  RxBool passwordVisible = false.obs;
+  RxBool passwordVisible = true.obs;
 
-  
   @override
   void onInit() {
     initMethod();

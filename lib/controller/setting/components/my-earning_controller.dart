@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:foodfestarestaurant/data/models/get_ny_earning_model.dart';
 import 'package:foodfestarestaurant/repositories/account_repositories.dart';
 import 'package:get/get.dart';

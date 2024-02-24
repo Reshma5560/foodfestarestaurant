@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestarestaurant/controller/auth/forgot_password_controller.dart';
-import 'package:foodfestarestaurant/repositories/auth_repositories.dart';
-import 'package:foodfestarestaurant/res/app_button.dart';
-import 'package:foodfestarestaurant/res/app_style.dart';
-import 'package:foodfestarestaurant/res/app_text_field.dart';
-import 'package:foodfestarestaurant/res/ui_utils.dart';
-import 'package:foodfestarestaurant/utils/helper.dart';
-import 'package:foodfestarestaurant/view/auth/components/auth_header.dart';
-import 'package:foodfestarestaurant/view/gradient_container/gradient_container.dart';
+import 'package:foodfestarestaurant/res/app_assets.dart';
+import 'package:foodfestarestaurant/res/app_colors.dart';
 import 'package:get/get.dart';
+
+import '../../repositories/auth_repositories.dart';
+import '../../res/app_button.dart';
+import '../../res/app_style.dart';
+import '../../res/app_text_field.dart';
+import '../../utils/helper.dart';
+import '../gradient_container/gradient_container.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
-
   final ForgotPasswordcontroller con = Get.put(ForgotPasswordcontroller());
 
   @override
@@ -22,128 +22,153 @@ class ForgotPasswordScreen extends StatelessWidget {
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
         body: GradientContainer(
-          child: Column(
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              const AuthHeader(),
-              Expanded(
-                child: Stack(
-                  children: [
-                    TweenAnimationBuilder(
-                      duration: const Duration(milliseconds: 1000),
-                      curve: Curves.easeOutCubic,
-                      tween: Tween(begin: 20.0, end: 1.0),
-                      builder: (context, value, child) {
-                        return AnimatedOpacity(
-                          opacity: value == 20 ? 0 : 1,
-                          duration: const Duration(milliseconds: 700),
-                          child: Obx(
-                            () => ListView(
-                              padding: EdgeInsets.all(defaultPadding.w),
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.onDrag,
-                              physics: const RangeMaintainingScrollPhysics(),
-                              children: [
-                                SizedBox(
-                                    height: double.parse(value.toString())),
-                                Text(
-                                  "Forgot Password",
-                                  style: AppStyle.authTitleStyle(),
-                                ),
-                                SizedBox(height: defaultPadding.w),
-                                Text(
-                                  "Enter your email and we will send you instruction to reset your password.",
-                                  style: AppStyle.authSubtitleStyle(),
-                                ),
-                                SizedBox(height: defaultPadding.w),
-                                AppTextField(
-                                  titleText: "Email",
-                                  hintText: "Enter Email",
-                                  controller: con.emailCon.value,
-                                  errorMessage: con.emailError.value,
-                                  showError: con.emailValidation.value,
-                                  keyboardType: TextInputType.emailAddress,
-                                  onChanged: (value) {
-                                    con.emailValidation.value = false;
-                                  },
-                                ),
-                                SizedBox(
-                                    height: MediaQuery.of(context)
-                                            .viewInsets
-                                            .bottom +
-                                        defaultPadding.w * 3),
-                                Obx(
-                                  () => TweenAnimationBuilder(
-                                    duration:
-                                        const Duration(milliseconds: 1000),
-                                    curve: Curves.elasticOut,
-                                    tween: con.buttonPress.value
-                                        ? Tween(begin: 0.9, end: 0.97)
-                                        : Tween(begin: 1.0, end: 1.0),
-                                    builder: (context, value, child) {
-                                      return Transform.scale(
-                                        scale: value,
-                                        child: Obx(
-                                          () => AppButton(
-                                            title: "CONTINUE",
-                                            loader: con.isLoading.value,
-                                            onHighlightChanged: (press) {
-                                              con.buttonPress.value = press;
-                                            },
-                                            onPressed: () {
-                                              if (con.isLoading.isFalse) {
-                                                /// Email validation
-                                                if (con.emailCon.value.text
-                                                    .trim()
-                                                    .isEmpty) {
-                                                  con.emailValidation.value =
-                                                      true;
-                                                  con.emailError.value =
-                                                      "Please enter your email address.";
-                                                } else if (Helper.isEmail(con
-                                                        .emailCon.value.text
-                                                        .trim()) !=
-                                                    true) {
-                                                  con.emailValidation.value =
-                                                      true;
-                                                  con.emailError.value =
-                                                      "Please enter valid email address.";
-                                                } else {
-                                                  con.emailValidation.value =
-                                                      false;
-                                                }
-
-                                                if (con
-                                                    .emailValidation.isFalse) {
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                  AuthRepository()
-                                                      .forgotPasswordApiCall(
-                                                    isLoader: con.isLoading,
-                                                    params: {
-                                                      "email": con
-                                                          .emailCon.value.text
-                                                          .trim(),
-                                                    },
-                                                  );
-                                                }
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    UiUtils.scrollGradient(context),
-                  ],
+              SizedBox(
+                height: Get.height,
+                child: Image.asset(
+                  AppAssets.bgImage,
+                  fit: BoxFit.cover,
                 ),
               ),
+              Container(
+                  height: Get.height * 0.45,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(30.r),
+                      border: Border.all(
+                          width: 13.w,
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.2))),
+                  child: TweenAnimationBuilder(
+                    duration: const Duration(milliseconds: 1000),
+                    curve: Curves.easeOutCubic,
+                    tween: Tween(begin: 20.0, end: 1.0),
+                    builder: (context, value, child) {
+                      return AnimatedOpacity(
+                          opacity: value == 20 ? 0 : 1,
+                          duration: const Duration(milliseconds: 700),
+                          child: Obx(() => ListView(
+                                padding: EdgeInsets.all(defaultPadding.w),
+                                keyboardDismissBehavior:
+                                    ScrollViewKeyboardDismissBehavior.onDrag,
+                                physics: const RangeMaintainingScrollPhysics(),
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Image.asset(AppAssets.bgLogo),
+                                      Text(
+                                        "Forgot Password",
+                                        style: TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: defaultPadding.h),
+                                  AppTextField(
+                                    titleText: "Email",
+                                    hintText: "Enter Email",
+                                    controller: con.emailCon.value,
+                                    errorMessage: con.emailError.value,
+                                    showError: con.emailValidation.value,
+                                    keyboardType: TextInputType.emailAddress,
+                                    onChanged: (value) {
+                                      con.emailValidation.value = false;
+                                    },
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                  ),
+                                  SizedBox(height: 30.h),
+                                  Obx(
+                                    () => TweenAnimationBuilder(
+                                      duration:
+                                          const Duration(milliseconds: 1000),
+                                      curve: Curves.elasticOut,
+                                      tween: con.buttonPress.value
+                                          ? Tween(begin: 0.9, end: 0.97)
+                                          : Tween(begin: 1.0, end: 1.0),
+                                      builder: (context, value, child) {
+                                        return Transform.scale(
+                                          scale: value,
+                                          child: Obx(
+                                            () => AppButton(
+                                              height: 30.h,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.r),
+                                              title: "Continue",
+                                              loader: con.isLoading.value,
+                                              onHighlightChanged: (press) {
+                                                con.buttonPress.value = press;
+                                              },
+                                              onPressed: () {
+                                                if (con.isLoading.isFalse) {
+                                                  /// Email validation
+                                                  if (con.emailCon.value.text
+                                                      .trim()
+                                                      .isEmpty) {
+                                                    con.emailValidation.value =
+                                                        true;
+                                                    con.emailError.value =
+                                                        "Please enter your email address.";
+                                                  } else if (Helper.isEmail(con
+                                                          .emailCon.value.text
+                                                          .trim()) !=
+                                                      true) {
+                                                    con.emailValidation.value =
+                                                        true;
+                                                    con.emailError.value =
+                                                        "Please enter valid email address.";
+                                                  } else {
+                                                    con.emailValidation.value =
+                                                        false;
+                                                  }
+
+                                                  if (con.emailValidation
+                                                      .isFalse) {
+                                                    FocusScope.of(context)
+                                                        .unfocus();
+                                                    AuthRepository()
+                                                        .forgotPasswordApiCall(
+                                                      isLoader: con.isLoading,
+                                                      params: {
+                                                        "email": con
+                                                            .emailCon.value.text
+                                                            .trim(),
+                                                      },
+                                                    );
+                                                  }
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ).paddingSymmetric(
+                                  horizontal: 10.w, vertical: 15.h)));
+                    },
+                  )).paddingSymmetric(horizontal: 10.w),
+              // UiUtils.scrollGradient(context),
             ],
           ),
         ),

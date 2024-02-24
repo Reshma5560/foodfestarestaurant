@@ -1,11 +1,11 @@
 // ignore_for_file: unrelated_type_equality_checks
 
 import 'dart:developer';
-import 'package:foodfestarestaurant/controller/account/components/business_management_schedule_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/business_mangement_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/display_customer_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/display_deliveryman_controller.dart';
-import 'package:foodfestarestaurant/controller/account/components/my-earning_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/business_management_schedule_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/business_mangement_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/display_customer_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/display_deliveryman_controller.dart';
+import 'package:foodfestarestaurant/controller/setting/components/my-earning_controller.dart';
 import 'package:foodfestarestaurant/data/api/api_function.dart';
 import 'package:foodfestarestaurant/data/handler/api_url.dart';
 import 'package:foodfestarestaurant/data/models/get_business_config_model.dart';

@@ -28,259 +28,281 @@ class OrderManagementScreen extends StatelessWidget {
               return AnimatedOpacity(
                   opacity: value == 20 ? 0 : 1,
                   duration: const Duration(milliseconds: 700),
-                  child: Column(children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(defaultRadius * 3),
-                        bottomRight: Radius.circular(defaultRadius * 3),
-                      ),
-                      child: MyAppBar(
-                        bgColor: Theme.of(context).colorScheme.background,
-                        title: "Order Management",
-                        centerTitle: true,
-                        titleStyle: AppStyle.customAppBarTitleStyle()
-                            .copyWith(color: AppColors.black),
-                        actions: [
-                          InkWell(
-                              onTap: () {
-                                _filterBottomSheet();
-                              },
-                              child: const Icon(Icons.filter_alt))
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                        child: RefreshIndicator(
-                      onRefresh: () async {
-                        await DesktopRepository().getOrderHistoryFilterApiCall(
-                          isInitial: true,
-                          fromdDate: con.fromDateCon.value.text,
-                          toDate: con.toDateCon.value.text,
-                        );
-                      },
-                      child: Obx(() => con.isLoader.isTrue
-                          ? const AppLoader()
-                          : ListView.builder(
-                              padding: EdgeInsets.symmetric(vertical: 5.h),
-                              itemCount: con.getOrderHistoryFilterList.length,
-                              // padding: EdgeInsets.zero,
-                              itemBuilder: (BuildContext context, int index) {
-                                var item = con.getOrderHistoryFilterList[index];
-                                return InkWell(
+                  child: Stack(
+                    children: [
+                      Image.asset("assets/images/appbar_bg_img.png"),
+                      Column(children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(defaultRadius * 3),
+                            bottomRight: Radius.circular(defaultRadius * 3),
+                          ),
+                          child: MyAppBar(
+                            bgColor: Theme.of(context).colorScheme.background,
+                            title: "Order Management",
+                            centerTitle: true,
+                            titleStyle: AppStyle.customAppBarTitleStyle()
+                                .copyWith(color: AppColors.black),
+                            actions: [
+                              InkWell(
                                   onTap: () {
-                                    Get.toNamed(
-                                        AppRoutes.orderManagementDetailScreen,
-                                        arguments: {'orderId': item.id});
+                                    _filterBottomSheet();
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            width: 2),
-                                        color: AppColors.white,
-                                        boxShadow: AppStyle.boxShadow(),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
+                                  child: const Icon(Icons.filter_alt))
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                            child: RefreshIndicator(
+                          onRefresh: () async {
+                            await DesktopRepository()
+                                .getOrderHistoryFilterApiCall(
+                              isInitial: true,
+                              fromdDate: con.fromDateCon.value.text,
+                              toDate: con.toDateCon.value.text,
+                            );
+                          },
+                          child: Obx(() => con.isLoader.isTrue
+                              ? const AppLoader()
+                              : ListView.builder(
+                                  padding: EdgeInsets.symmetric(vertical: 5.h),
+                                  itemCount:
+                                      con.getOrderHistoryFilterList.length,
+                                  // padding: EdgeInsets.zero,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    var item =
+                                        con.getOrderHistoryFilterList[index];
+                                    return InkWell(
+                                      onTap: () {
+                                        Get.toNamed(
+                                            AppRoutes
+                                                .orderManagementDetailScreen,
+                                            arguments: {'orderId': item.id});
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                width: 2),
+                                            color: AppColors.white,
+                                            boxShadow: AppStyle.boxShadow(),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "Order No.# ",
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        color: AppColors.black,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 13.sp),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "Order No.# ",
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            color:
+                                                                AppColors.black,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 13.sp),
+                                                      ),
+                                                      Text(
+                                                        item.invoiceNumber ??
+                                                            "",
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 13.sp),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Text(
-                                                    item.invoiceNumber ?? "",
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 13.sp),
-                                                  ),
-                                                ],
-                                              ),
+                                                ),
+                                                InkWell(
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                          AppRoutes
+                                                              .orderManagementDetailScreen,
+                                                          arguments: {
+                                                            'orderId': item.id
+                                                          });
+                                                    },
+                                                    child: Icon(
+                                                      Icons.arrow_forward,
+                                                      size: 18.sp,
+                                                    ))
+                                              ],
                                             ),
-                                            InkWell(
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                      AppRoutes
-                                                          .orderManagementDetailScreen,
-                                                      arguments: {
-                                                        'orderId': item.id
-                                                      });
-                                                },
-                                                child: Icon(
-                                                  Icons.arrow_forward,
-                                                  size: 18.sp,
-                                                ))
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Order ",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 13.sp),
+                                            SizedBox(
+                                              height: 5.h,
                                             ),
-                                            Text(
-                                              "Status: ",
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 13.sp),
-                                            ),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Order ",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 13.sp),
+                                                ),
+                                                Text(
+                                                  "Status: ",
+                                                  style: TextStyle(
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 13.sp),
+                                                ),
+                                                Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       horizontal: 8,
                                                       vertical: 2),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(6),
-                                                  color: Theme.of(context)
-                                                      .primaryColor),
-                                              child: Text(
-                                                item.orderStatus?.statusName ??
-                                                    "",
-                                                style: TextStyle(
-                                                    color: AppColors.white,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 8.sp),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Payment ",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 13.sp),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                  child: Text(
+                                                    item.orderStatus
+                                                            ?.statusName ??
+                                                        "",
+                                                    style: TextStyle(
+                                                        color: AppColors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 8.sp),
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                            Text(
-                                              "Status: ",
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 13.sp),
+                                            SizedBox(
+                                              height: 5.h,
                                             ),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Payment ",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 13.sp),
+                                                ),
+                                                Text(
+                                                  "Status: ",
+                                                  style: TextStyle(
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 13.sp),
+                                                ),
+                                                Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       horizontal: 8,
                                                       vertical: 2),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(6),
-                                                  color: Theme.of(context)
-                                                      .primaryColor),
-                                              child: Text(
-                                                item.paymentStatus
-                                                        ?.statusName ??
-                                                    "",
-                                                style: TextStyle(
-                                                    color: AppColors.white,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 8.sp),
-                                              ),
-                                            )
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                  child: Text(
+                                                    item.paymentStatus
+                                                            ?.statusName ??
+                                                        "",
+                                                    style: TextStyle(
+                                                        color: AppColors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 8.sp),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Divider(
+                                              color: Theme.of(context).primaryColor,
+                                            ),
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Text(
+                                              "Date : ${DateFormat("DD MMM,yyyy").format(item.createdAt!)}",
+                                              style: TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.sp),
+                                            ),
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Text(
+                                              "Restaurant Name : ${item.restaurant?.restaurantName}",
+                                              style: TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.sp),
+                                            ),
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Text(
+                                              "Customer Name : ${item.user?.firstName} ${item.user?.lastName}",
+                                              style: TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.sp),
+                                            ),
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Text(
+                                              "Customer Name : ${item.user?.firstName} ${item.user?.lastName}",
+                                              style: TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.sp),
+                                            ),
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Text(
+                                              "Amount : ${item.orderAmount}",
+                                              style: TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.sp),
+                                            ),
                                           ],
-                                        ),
-                                        SizedBox(
-                                          height: 3.h,
-                                        ),
-                                        Divider(
-                                          color: AppColors.greyBorderColor,
-                                        ),
-                                        SizedBox(
-                                          height: 3.h,
-                                        ),
-                                        Text(
-                                          "Date : ${DateFormat("DD MMM,yyyy").format(item.createdAt!)}",
-                                          style: TextStyle(
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 3.h,
-                                        ),
-                                        Text(
-                                          "Restaurant Name : ${item.restaurant?.restaurantName}",
-                                          style: TextStyle(
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 3.h,
-                                        ),
-                                        Text(
-                                          "Customer Name : ${item.user?.firstName} ${item.user?.lastName}",
-                                          style: TextStyle(
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 3.h,
-                                        ),
-                                        Text(
-                                          "Customer Name : ${item.user?.firstName} ${item.user?.lastName}",
-                                          style: TextStyle(
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 3.h,
-                                        ),
-                                        Text(
-                                          "Amount : ${item.orderAmount}",
-                                          style: TextStyle(
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12.sp),
-                                        ),
-                                      ],
-                                    ).paddingSymmetric(
-                                        vertical: 10.h, horizontal: 10.w),
-                                  ).paddingSymmetric(
-                                      vertical: 3.h, horizontal: 10.w),
-                                );
-                              },
-                            )),
-                    ))
-                  ]));
+                                        ).paddingSymmetric(
+                                            vertical: 10.h, horizontal: 10.w),
+                                      ).paddingSymmetric(
+                                          vertical: 3.h, horizontal: 10.w),
+                                    );
+                                  },
+                                )),
+                        ))
+                      ]),
+                    ],
+                  ));
             }));
   }
 
