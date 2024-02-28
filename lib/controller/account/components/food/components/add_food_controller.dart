@@ -25,10 +25,9 @@ class AddFoodController extends GetxController {
   File? apiImage;
   RxString image = "".obs;
 
-  RxList<VariationControllerModel> controllerList =
-      <VariationControllerModel>[].obs;
+  RxList<VariationControllerModel> controllerList = <VariationControllerModel>[].obs;
 
-      RxList<AdditionalModel> additionalControllerList=<AdditionalModel>[].obs;
+  // RxList<AdditionalModel> mainList = <AdditionalModel>[].obs;
 
   RxList selectedAddons = [].obs;
 
@@ -64,36 +63,30 @@ class AddFoodController extends GetxController {
 
   Rx<TextEditingController> startTimeCon = TextEditingController().obs;
   Rx<TextEditingController> endTimeCon = TextEditingController().obs;
-  TimeOfDay startTime =
-      TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
-  TimeOfDay endTime =
-      TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
+  TimeOfDay startTime = TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
+  TimeOfDay endTime = TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
 
   RxList<GetCategoryDatum> getCategoryList = <GetCategoryDatum>[].obs;
 
-  Rx<GetCategoryDatum> selectCategoryDropDownValue =
-      GetCategoryDatum(categoryName: 'Select Category').obs;
+  Rx<GetCategoryDatum> selectCategoryDropDownValue = GetCategoryDatum(categoryName: 'Select Category').obs;
 
   RxList<GetSubCategoryDatum> getSubCategoryList = <GetSubCategoryDatum>[].obs;
 
-  Rx<GetSubCategoryDatum> selectSubCategoryDropDownValue =
-      GetSubCategoryDatum(categoryName: 'Select Sub Category').obs;
+  Rx<GetSubCategoryDatum> selectSubCategoryDropDownValue = GetSubCategoryDatum(categoryName: 'Select Sub Category').obs;
 
-  RxList<GetRestaurantAddonsDatum> getRestaurantAddonsList =
-      <GetRestaurantAddonsDatum>[].obs;
+  RxList<GetRestaurantAddonsDatum> getRestaurantAddonsList = <GetRestaurantAddonsDatum>[].obs;
 
-  Rx<GetRestaurantAddonsDatum> selectRestaurantAddonDropDownValue =
-      GetRestaurantAddonsDatum(addonName: 'Select addons').obs;
+  Rx<GetRestaurantAddonsDatum> selectRestaurantAddonDropDownValue = GetRestaurantAddonsDatum(addonName: 'Select addons').obs;
 
   RxList<ItemTypeModel> itemTypeData = <ItemTypeModel>[].obs;
 
-  Rx<ItemTypeModel> selectItemTypeDropDownValue =
-      ItemTypeModel(name: 'Select Item Type', id: 2).obs;
+  Rx<ItemTypeModel> selectItemTypeDropDownValue = ItemTypeModel(name: 'Select Item Type', id: 2).obs;
 
   RxList<ItemTypeModel> discountTypeData = <ItemTypeModel>[].obs;
 
-  Rx<ItemTypeModel> selectDiscountTypeDropDownValue =
-      ItemTypeModel(name: 'Select Discount Tyoe', id: 2).obs;
+  Rx<ItemTypeModel> selectDiscountTypeDropDownValue = ItemTypeModel(name: 'Select Discount Tyoe', id: 2).obs;
+
+  Rx<TextEditingController> variantNameCon = TextEditingController().obs;
 
   showImagePickerBottomSheet() {
     showModalBottomSheet<dynamic>(
@@ -117,8 +110,7 @@ class AddFoodController extends GetxController {
             ),
             ListTile(
               dense: true,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
               leading: Icon(
                 Icons.camera_alt_rounded,
                 color: AppColors.grey,
@@ -132,8 +124,7 @@ class AddFoodController extends GetxController {
             ),
             ListTile(
               dense: true,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
               leading: Icon(
                 Icons.perm_media_rounded,
                 color: AppColors.grey,
@@ -147,8 +138,7 @@ class AddFoodController extends GetxController {
             ),
             ListTile(
               dense: true,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
               leading: Icon(
                 Icons.close,
                 color: AppColors.grey,
@@ -188,6 +178,29 @@ class AddFoodController extends GetxController {
         foodId: foodId.value,
       );
     }
+
+    // additionalControllerList.add(
+    //   OuterList(
+    //       [
+    //         AdditionalModel(additionalPrice: TextEditingController(),
+    //           optionName: TextEditingController(),),
+    //       ]
+    //   ),
+    // );
+
+    controllerList.add(
+      VariationControllerModel(
+        nameController: TextEditingController(),
+        outerList: [
+          [
+            InnerListModel(
+              additionalPrice: TextEditingController(),
+              optionName: TextEditingController(),
+            )
+          ].obs
+        ].obs,
+      ),
+    );
 
     super.onReady();
   }

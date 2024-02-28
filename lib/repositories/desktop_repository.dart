@@ -762,7 +762,8 @@ class DesktopRepository {
         "tags": con.tagCon.value.text.trim(),
         "available_time_starts": con.startTimeCon.value.text.trim(),
         "available_time_ends": con.endTimeCon.value.text.trim(),
-        "image": await dio.MultipartFile.fromFile(con.apiImage!.path, filename: con.imagePath.value.split("/").last)
+
+        if (con.apiImage?.path != null) "image": await dio.MultipartFile.fromFile(con.apiImage!.path, filename: con.imagePath.value.split("/").last)
       });
       await APIFunction().postApiCall(apiName: "${ApiUrls.restaurantUrl}${ApiUrls.addFoodUrl}", params: formData).then(
         (response) async {
