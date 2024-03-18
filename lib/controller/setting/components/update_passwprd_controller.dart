@@ -13,4 +13,6 @@ class UpdatePasswordController extends GetxController {
   RxString oldPasswordError = ''.obs;
   RxString newPasswordError = ''.obs;
   RxString cnfmNewPasswordError = ''.obs;
+
+  RxBool isLoading = false.obs;
 }

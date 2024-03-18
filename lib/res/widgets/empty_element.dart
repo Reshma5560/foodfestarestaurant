@@ -6,7 +6,6 @@ import '../../utils/utils.dart';
 import '../app_assets.dart';
 import '../app_style.dart';
 
-
 class EmptyElement extends StatelessWidget {
   final String? imagePath;
   final String title;

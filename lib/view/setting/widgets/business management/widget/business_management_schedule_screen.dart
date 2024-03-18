@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestarestaurant/controller/setting/components/business_management_schedule_controller.dart';
 import 'package:foodfestarestaurant/repositories/account_repositories.dart';
-import 'package:foodfestarestaurant/res/app_appbar.dart';
 import 'package:foodfestarestaurant/res/app_button.dart';
 import 'package:foodfestarestaurant/res/app_colors.dart';
 import 'package:foodfestarestaurant/res/app_loader.dart';
@@ -12,8 +11,8 @@ import 'package:get/get.dart';
 class BusinessManagementScheduleScreen extends StatelessWidget {
   BusinessManagementScheduleScreen({super.key});
 
-  final BusinessManagementScheduleController con =
-      Get.put(BusinessManagementScheduleController());
+  final BusinessManagementScheduleController con = Get.put(BusinessManagementScheduleController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,101 +27,105 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
             duration: const Duration(milliseconds: 700),
             child: Stack(
               children: [
-                Image.asset("assets/images/appbar_bg_img.png"),
-                ListView(padding: EdgeInsets.zero, children: [
-                  CommonAppBar(
-                    title: "Restaurant Setup",
-                    onPressed: () {
-                      Get.back();
-                    },
+                Image.asset("assets/images/bg_home_image.png", width: Get.width, fit: BoxFit.fill),
+                Padding(
+                  padding: EdgeInsets.only(top: Get.height * 0.03),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          size: 16.sp,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
+                      Text(
+                        "Restaurant Setup",
+                        style: AppStyle.customAppBarTitleStyle().copyWith(color: AppColors.black, fontSize: 16.sp),
+                      ),
+                      const Text("Aboutus", style: TextStyle(color: Colors.transparent)),
+                    ],
                   ),
-                  Obx(
-                    () => con.isLoader.isTrue
-                        ? const AppLoader()
-                        : Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 10.h),
-                            width: Get.width,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 2),
-                                color: Theme.of(context).colorScheme.background,
-                                boxShadow: AppStyle.boxShadow(),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Restaurant Open & Close Time",
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 13.sp),
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  _scheduleModule(),
-                                  SizedBox(height: 5.h),
-                                  Row(
-                                    children: [
-                                      Expanded(
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: Get.height * 0.1),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      Obx(
+                        () => con.isLoader.isTrue
+                            ? const AppLoader()
+                            : Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                                width: Get.width,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+                                    color: Theme.of(context).colorScheme.background,
+                                    boxShadow: AppStyle.boxShadow(),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Restaurant Open & Close Time",
+                                      style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 13.sp),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    _scheduleModule(),
+                                    SizedBox(height: 5.h),
+                                    Row(
+                                      children: [
+                                        Expanded(
                                           child: AppButton(
-                                        height: 32.h,
-                                        buttonType: ButtonType.outline,
-                                        borderWidth: 2,
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .background,
-                                        borderColor:
-                                            Theme.of(context).primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(16.r),
-                                        onPressed: () {
-                                          Get.back();
-                                        },
-                                        child: Text(
-                                          "Back",
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 13.sp),
+                                            height: 32.h,
+                                            buttonType: ButtonType.outline,
+                                            borderWidth: 2,
+                                            backgroundColor: Theme.of(context).colorScheme.background,
+                                            borderColor: Theme.of(context).primaryColor,
+                                            borderRadius: BorderRadius.circular(16.r),
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: Text(
+                                              "Back",
+                                              style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 13.sp),
+                                            ),
+                                          ),
                                         ),
-                                      )),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      Expanded(
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Expanded(
                                           child: AppButton(
-                                        height: 32.h,
-                                        buttonType: ButtonType.outline,
-                                        borderWidth: 2,
-                                        backgroundColor:
-                                            Theme.of(context).primaryColor,
-                                        borderColor:
-                                            Theme.of(context).primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(16.r),
-                                        onPressed: () {
-                                          AccountRepository()
-                                              .addRestaurantDetailSettingApiCall(
-                                                  isLoader: con.isLoader);
-                                        },
-                                        child: Text(
-                                          "Save Change",
-                                          style: TextStyle(
-                                              color: AppColors.white,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 13.sp),
-                                        ),
-                                      ))
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.h),
-                                ]),
-                          ).paddingSymmetric(horizontal: 12.w, vertical: 10.h),
+                                            height: 32.h,
+                                            buttonType: ButtonType.outline,
+                                            borderWidth: 2,
+                                            backgroundColor: Theme.of(context).primaryColor,
+                                            borderColor: Theme.of(context).primaryColor,
+                                            borderRadius: BorderRadius.circular(16.r),
+                                            onPressed: () {
+                                              AccountRepository().addRestaurantDetailSettingApiCall(isLoader: con.isLoader);
+                                            },
+                                            child: Text(
+                                              "Save Change",
+                                              style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w600, fontSize: 13.sp),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.h),
+                                  ],
+                                ),
+                              ).paddingSymmetric(horizontal: 12.w, vertical: 10.h),
+                      ),
+                    ],
                   ),
-                ]),
+                ),
               ],
             ),
           );
@@ -139,67 +142,39 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         children: [
           Text(
             con.days[0].toUpperCase(),
-            style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13.sp),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 13.sp),
           ),
-          Obx(() => mondaySchedule()
-              .paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
+          Obx(() => mondaySchedule().paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
           Text(
             con.days[1].toUpperCase(),
-            style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13.sp),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 13.sp),
           ),
-          Obx(() => tuesdaySchedule()
-              .paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
+          Obx(() => tuesdaySchedule().paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
           Text(
             con.days[2].toUpperCase(),
-            style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13.sp),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 13.sp),
           ),
-          Obx(() => wendesdaySchedule()
-              .paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
+          Obx(() => wendesdaySchedule().paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
           Text(
             con.days[3].toUpperCase(),
-            style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13.sp),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 13.sp),
           ),
-          Obx(() => thursdaySchedule()
-              .paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
+          Obx(() => thursdaySchedule().paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
           Text(
             con.days[4].toUpperCase(),
-            style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13.sp),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 13.sp),
           ),
-          Obx(() => fridaySchedule()
-              .paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
+          Obx(() => fridaySchedule().paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
           Text(
             con.days[5].toUpperCase(),
-            style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13.sp),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 13.sp),
           ),
-          Obx(() => saturdaySchedule()
-              .paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
+          Obx(() => saturdaySchedule().paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
           Text(
             con.days[6].toUpperCase(),
-            style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13.sp),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 13.sp),
           ),
-          Obx(() => sundaySchedule()
-              .paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
+          Obx(() => sundaySchedule().paddingSymmetric(horizontal: 5.w, vertical: 5.h)),
           SizedBox(
             height: 10.h,
           ),
@@ -284,16 +259,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
               underline: Container(),
               dropdownColor: AppColors.white,
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               isExpanded: true,
               value: con.selectedMondayOpening.value,
               onChanged: (String? value) {
@@ -302,10 +272,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -314,14 +285,9 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               underline: Container(),
               isExpanded: true,
               value: con.selectedMondayClosing.value,
@@ -331,10 +297,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -350,16 +317,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
               underline: Container(),
               dropdownColor: AppColors.white,
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               isExpanded: true,
               value: con.selectedTuesdayOpening.value,
               onChanged: (String? value) {
@@ -368,10 +330,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -380,14 +343,9 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               underline: Container(),
               isExpanded: true,
               value: con.selectedTuesdayClosing.value,
@@ -397,10 +355,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -416,16 +375,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
               underline: Container(),
               dropdownColor: AppColors.white,
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               isExpanded: true,
               value: con.selectedWendesdayOpening.value,
               onChanged: (String? value) {
@@ -434,10 +388,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -446,14 +401,9 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               underline: Container(),
               isExpanded: true,
               value: con.selectedWendesdayClosing.value,
@@ -463,10 +413,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -482,16 +433,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
               underline: Container(),
               dropdownColor: AppColors.white,
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               isExpanded: true,
               value: con.selectedThursdayOpening.value,
               onChanged: (String? value) {
@@ -500,10 +446,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -512,14 +459,9 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               underline: Container(),
               isExpanded: true,
               value: con.selectedThursdayClosing.value,
@@ -529,10 +471,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -548,16 +491,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
               underline: Container(),
               dropdownColor: AppColors.white,
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               isExpanded: true,
               value: con.selectedFridayOpening.value,
               onChanged: (String? value) {
@@ -566,10 +504,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -578,14 +517,9 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               underline: Container(),
               isExpanded: true,
               value: con.selectedFridayClosing.value,
@@ -595,10 +529,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -614,16 +549,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
               underline: Container(),
               dropdownColor: AppColors.white,
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               isExpanded: true,
               value: con.selectedSaturdayOpening.value,
               onChanged: (String? value) {
@@ -632,10 +562,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -644,14 +575,9 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               underline: Container(),
               isExpanded: true,
               value: con.selectedSaturdayClosing.value,
@@ -661,10 +587,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -680,16 +607,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
               underline: Container(),
               dropdownColor: AppColors.white,
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               isExpanded: true,
               value: con.selectedSundayOpening.value,
               onChanged: (String? value) {
@@ -698,10 +620,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),
@@ -710,14 +633,9 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r)),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
             child: DropdownButton<String>(
-              style: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp),
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 12.sp),
               underline: Container(),
               isExpanded: true,
               value: con.selectedSundayClosing.value,
@@ -727,10 +645,11 @@ class BusinessManagementScheduleScreen extends StatelessWidget {
               items: con.items
                   .map<DropdownMenuItem<String>>(
                     (e) => DropdownMenuItem<String>(
-                        value: e["value"],
-                        child: Text(
-                          e["text"],
-                        )),
+                      value: e["value"],
+                      child: Text(
+                        e["text"],
+                      ),
+                    ),
                   )
                   .toList(),
             ),

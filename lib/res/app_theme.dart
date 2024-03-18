@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app_colors.dart';
 import 'app_style.dart';
@@ -12,7 +13,10 @@ class AppTheme {
       primaryColor: AppColors.kPrimaryColor,
       visualDensity: VisualDensity.comfortable,
       scaffoldBackgroundColor: const Color(0xFFF9FCFF),
-      appBarTheme: AppBarTheme(color: AppColors.kPrimaryColor),
+      appBarTheme: AppBarTheme(
+        color: AppColors.kPrimaryColor,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
       popupMenuTheme: const PopupMenuThemeData(color: Color(0xFFFFFFFF)),
       iconTheme: const IconThemeData(color: Color(0xff2b2b2b)),
       shadowColor: const Color(0xFFdedcdc),

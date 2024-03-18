@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class VariationControllerModel {
   TextEditingController? nameController;
-  List<AdditionalModel>? additionalController;
+  final RxList<RxList<InnerListModel>>? outerList;
 
-  VariationControllerModel({this.nameController, this.additionalController});
+  VariationControllerModel({this.nameController, this.outerList});
 }
 
-class AdditionalModel {
+class InnerListModel {
   TextEditingController? optionName;
   TextEditingController? additionalPrice;
 
-  AdditionalModel({this.optionName, this.additionalPrice});
+  InnerListModel({this.optionName, this.additionalPrice});
 }
