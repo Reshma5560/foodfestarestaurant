@@ -303,7 +303,7 @@ class OrderManagementScreen extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
-                hintText: "Enter Fromdate",
+                hintText: "Enter From date",
                 hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
                 suffixIcon: const Icon(Icons.timer),
                 suffixOnTap: () async {
@@ -332,7 +332,7 @@ class OrderManagementScreen extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
-                hintText: "Enter Todate",
+                hintText: "Enter To date",
                 hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
                 suffixIcon: const Icon(Icons.timer),
                 suffixOnTap: () async {
