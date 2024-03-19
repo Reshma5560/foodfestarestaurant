@@ -12,6 +12,7 @@ import '../../res/app_button.dart';
 import '../../res/app_style.dart';
 import '../../res/app_text_field.dart';
 import '../../utils/helper.dart';
+import '../../utils/local_storage.dart';
 import '../gradient_container/gradient_container.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -133,28 +134,34 @@ class LoginScreen extends StatelessWidget {
                             Row(
                               children: [
                                 Checkbox(
-                                  value: con.isRemeber.value,
+                                  value: con.isRemember.value,
                                   onChanged: (value) {
-                                    con.isRemeber.value = !con.isRemeber.value;
+                                    con.isRemember.value = value!;
+                                    if (con.isRemember.isTrue) {
+                                      LocalStorage.setLoginInfo(
+                                        userEmail: con.emailCon.value.text.trim(),
+                                        userPassword: con.passwordCon.value.text.trim(),
+                                        remember: con.isRemember.value,
+                                      );
+                                    } else {
+                                      LocalStorage.email.value = "";
+                                      LocalStorage.password.value = "";
+                                      LocalStorage.isRemember.value = false;
+                                    }
                                   },
                                   checkColor: AppColors.white,
                                   activeColor: Theme.of(context).primaryColor,
                                 ),
                                 Align(
                                   alignment: Alignment.centerRight,
-                                  child: InkWell(
-                                    onTap: () {
-                                      con.isRemeber.value = !con.isRemeber.value;
-                                    },
-                                    child: Text(
-                                      "Remember Me!",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        decorationThickness: 1.5,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  child: Text(
+                                    "Remember Me!",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      decorationThickness: 1.5,
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),

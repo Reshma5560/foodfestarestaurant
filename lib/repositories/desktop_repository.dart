@@ -49,7 +49,7 @@ class DesktopRepository {
             con.image.value = con.getDataMap?.data.image ?? "";
             con.firstNameCon.text = con.getDataMap?.data.firstName ?? "";
             con.lastNameCon.text = con.getDataMap?.data.lastName ?? "";
-            con.emailCon.text = con.getDataMap?.data.email ?? LocalStorage.loginEmail.value;
+            con.emailCon.text = con.getDataMap?.data.email ?? LocalStorage.email.value;
             con.mobileNumberCon.text = con.getDataMap?.data.phone ?? "";
             LocalStorage.prefs.write(Prefs.firstName, con.firstNameCon.value.text.trim());
             LocalStorage.prefs.write(Prefs.lastName, con.lastNameCon.value.text.trim());

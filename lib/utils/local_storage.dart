@@ -20,25 +20,28 @@ class Prefs {
   static const String deviceType = "DEVICE_TYPE";
   static const String deviceFCMToken = "DEVICE_FCM_TOKEN";
 
-  static const String loginEmail = "EMAIL_ID";
-  static const String loginPassword = "PASSWORD";
-  static const String isRemeber = "IS_REMEBER";
+  static const String userEmail = "USER_EMAIL";
+  static const String userPassword = "USER_PASSWORD";
+  static const String rememberMe = "REMEMBER_ME";
 
-  // static const String isGuestUser = "GUEST_USER";
-  // static const String showPreview = "SHOW_PREVIEW";
-  // static const String likeConcept = "LIKE_CONCEPT";
-  //
-  // static const String privacyPolicyLink = "PRIVACY_POLICY_LINK";
-  // static const String termsAndConditionsLink = "TERMS_AND_CONDITIONS_LINK";
-  // static const String faqLink = "FAQ_LINK";
-  // static const String aboutUsLink = "ABOUT_US_LINK";
-  // static const String playStoreLink = "PLAY_STORE_LINK";
-  // static const String appStoreLink = "APP_STORE_LINK";
+// static const String isGuestUser = "GUEST_USER";
+// static const String showPreview = "SHOW_PREVIEW";
+// static const String likeConcept = "LIKE_CONCEPT";
+//
+// static const String privacyPolicyLink = "PRIVACY_POLICY_LINK";
+// static const String termsAndConditionsLink = "TERMS_AND_CONDITIONS_LINK";
+// static const String faqLink = "FAQ_LINK";
+// static const String aboutUsLink = "ABOUT_US_LINK";
+// static const String playStoreLink = "PLAY_STORE_LINK";
+// static const String appStoreLink = "APP_STORE_LINK";
 }
 
 class LocalStorage {
-  static GetStorage prefs = GetStorage();
-
+  static GetStorage prefs = GetStorage("prefs");
+  static GetStorage prefsRemember = GetStorage("prefsRemember");
+  static RxString email = "".obs;
+  static RxString password = "".obs;
+  static RxBool isRemember = false.obs;
   static RxString token = "".obs;
   static RxString userId = "".obs;
   static RxString roleSlags = "".obs;
@@ -52,10 +55,6 @@ class LocalStorage {
   static RxString deviceId = "".obs;
   static RxString deviceToken = "".obs;
   static RxString deviceType = "".obs;
-
-  static RxString loginEmail = "".obs;
-  static RxString loginPassword = "".obs;
-  static RxBool isRemeber = false.obs;
 
   // static RxBool isGuestUser = true.obs;
   // static RxBool showPreview = true.obs;
@@ -106,8 +105,7 @@ class LocalStorage {
   //   appStoreLink.value = prefs.read(Prefs.appStoreLink) ?? "";
   // }
 
-  Future updateUserInfo(
-      {String? fistNaMEe, String? lastNaME, String? userImaGE}) async {
+  Future updateUserInfo({String? fistNaMEe, String? lastNaME, String? userImaGE}) async {
     if (!isValEmpty(fistNaMEe)) {
       await prefs.write(Prefs.firstName, fistNaMEe);
       firstName.value = prefs.read(Prefs.firstName) ?? "";
@@ -159,29 +157,16 @@ class LocalStorage {
     }
   }
 
-  static Future<void> setLoginInfo(
-      {required String userEmail,
-      required String userPassword,
-      required bool isRemeberData}) async {
-    if (!isValEmpty(userEmail)) {
-      await prefs.write(Prefs.loginEmail, userEmail);
-      loginEmail.value = prefs.read(Prefs.loginEmail);
-    }
+  static Future<void> setLoginInfo({required String userEmail, required String userPassword, required bool remember}) async {
+    await prefsRemember.write(Prefs.userEmail, userEmail.isNotEmpty ? userEmail : email);
+    await prefsRemember.write(Prefs.userPassword, userPassword.isNotEmpty ? userPassword : password);
+    await prefsRemember.write(Prefs.rememberMe, remember);
+    email.value = prefsRemember.read(Prefs.userEmail) ?? "";
+    password.value = prefsRemember.read(Prefs.userPassword) ?? "";
+    isRemember.value = prefsRemember.read(Prefs.rememberMe) ?? false;
 
-    if (!isValEmpty(userPassword)) {
-      await prefs.write(Prefs.loginPassword, userPassword);
-      loginPassword.value = prefs.read(Prefs.loginPassword) ?? "";
-    }
-
-    await prefs.write(Prefs.isRemeber, isRemeberData);
-    isRemeber.value = prefs.read(Prefs.isRemeber);
-  }
-
-  static Future<void> clearLoginData() async {
-    await prefs.erase();
-    loginEmail = "".obs;
-    loginPassword = "".obs;
-    isRemeber = false.obs;
+    printData(key: "User EMAIL", value: LocalStorage.email.value);
+    printData(key: "User PASSWORD", value: LocalStorage.password.value);
   }
 
   static Future<void> clearLocalStorage({bool clearDeviceData = false}) async {
@@ -196,6 +181,12 @@ class LocalStorage {
     isUserActive = false.obs;
     isUserVerify = false.obs;
 
+    if (isRemember.isFalse) {
+      await prefsRemember.erase();
+      email.value = "";
+      password.value = "";
+      isRemember.value = false;
+    }
     // isGuestUser = true.obs;
     // showPreview = true.obs;
     // likeConcept = true.obs;
@@ -217,7 +208,9 @@ class LocalStorage {
     mobileNumber.value = int.parse("${prefs.read(Prefs.mobileNumber) ?? 0}");
     isUserActive.value = prefs.read(Prefs.isUserActive) ?? false;
     isUserVerify.value = prefs.read(Prefs.isUserVerify) ?? false;
-
+    email.value = prefsRemember.read(Prefs.userEmail) ?? "";
+    password.value = prefsRemember.read(Prefs.userPassword) ?? "";
+    isRemember.value = prefsRemember.read(Prefs.rememberMe) ?? false;
     // isGuestUser.value = prefs.read(Prefs.isGuestUser) ?? true;
     // showPreview.value = prefs.read(Prefs.showPreview) ?? true;
     // likeConcept.value = prefs.read(Prefs.likeConcept) ?? true;
@@ -225,10 +218,6 @@ class LocalStorage {
     deviceId.value = prefs.read(Prefs.deviceId) ?? "";
     deviceToken.value = prefs.read(Prefs.deviceFCMToken) ?? "";
     deviceType.value = prefs.read(Prefs.deviceType) ?? "";
-
-    loginEmail.value = prefs.read(Prefs.loginEmail) ?? "";
-    loginPassword.value = prefs.read(Prefs.loginPassword) ?? "";
-    isRemeber.value = prefs.read(Prefs.isRemeber) ?? false;
 
     // privacyPolicyLink.value = prefs.read(Prefs.privacyPolicyLink) ?? "";
     // termsAndConditionsLink.value = prefs.read(Prefs.termsAndConditionsLink) ?? "";
@@ -252,9 +241,8 @@ class LocalStorage {
     printData(key: "User mobileNumber", value: LocalStorage.mobileNumber.value);
     printData(key: "User isUserActive", value: LocalStorage.isUserActive.value);
     printData(key: "User isUserVerify", value: LocalStorage.isUserVerify.value);
-    printData(key: "User email", value: LocalStorage.loginEmail.value);
-    printData(key: "User password", value: LocalStorage.loginPassword.value);
-    printData(key: "User is remeber ", value: LocalStorage.isRemeber.value);
+    printData(key: "User EMAIL", value: LocalStorage.email.value);
+    printData(key: "User PASSWORD", value: LocalStorage.password.value);
     // printData(key: "Show Preview", value: LocalStorage.showPreview.value);
     // printData(key: "Like Concept", value: LocalStorage.likeConcept.value);
   }

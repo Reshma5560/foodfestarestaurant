@@ -14,7 +14,8 @@ import 'utils/local_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init();
+  await GetStorage.init("prefs");
+  await GetStorage.init("prefsRemember");
   await LocalStorage.readDataInfo();
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);

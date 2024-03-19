@@ -259,116 +259,117 @@ class OrderManagementScreen extends StatelessWidget {
   _filterBottomSheet() {
     Get.bottomSheet(
       Container(
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
-          height: Get.height / 2.4,
-          width: Get.width,
-          decoration: BoxDecoration(
-              color: Theme.of(Get.context!).colorScheme.background,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r))),
-          child: ListView(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Filter",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 18.sp),
+        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
+        height: Get.height / 2.4,
+        width: Get.width,
+        decoration: BoxDecoration(
+            color: Theme.of(Get.context!).colorScheme.background,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r))),
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Filter",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 18.sp),
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+            SizedBox(
+              height: 40.h,
+              child: AppTextField(
+                enabled: true,
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
+                hintText: "Enter Name",
+                hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
+                controller: con.nameCon.value,
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.next,
               ),
-              SizedBox(
-                height: 8.h,
-              ),
-              SizedBox(
-                height: 40.h,
-                child: AppTextField(
-                  enabled: true,
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
-                  hintText: "Enter Name",
-                  hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
-                  controller: con.nameCon.value,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              SizedBox(
-                height: 40.h,
-                child: AppTextField(
-                  enabled: true,
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
-                  hintText: "Enter Fromdate",
-                  hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
-                  suffixIcon: const Icon(Icons.timer),
-                  suffixOnTap: () async {
-                    DateTime? pickedDate =
-                        await showDatePicker(context: Get.context!, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2101));
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            SizedBox(
+              height: 40.h,
+              child: AppTextField(
+                enabled: true,
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
+                hintText: "Enter Fromdate",
+                hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
+                suffixIcon: const Icon(Icons.timer),
+                suffixOnTap: () async {
+                  DateTime? pickedDate =
+                      await showDatePicker(context: Get.context!, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2101));
 
-                    if (pickedDate != null) {
-                      String formattedDate = DateFormat('yyyy-M-d').format(pickedDate);
+                  if (pickedDate != null) {
+                    String formattedDate = DateFormat('yyyy-M-d').format(pickedDate);
 
-                      con.fromDateCon.value.text = formattedDate;
-                    } else {}
-                  },
-                  controller: con.fromDateCon.value,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              SizedBox(
-                height: 40.h,
-                child: AppTextField(
-                  enabled: true,
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
-                  hintText: "Enter Todate",
-                  hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
-                  suffixIcon: const Icon(Icons.timer),
-                  suffixOnTap: () async {
-                    DateTime? pickedDate =
-                        await showDatePicker(context: Get.context!, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2101));
-
-                    if (pickedDate != null) {
-                      String formattedDate = DateFormat('yyyy-M-d').format(pickedDate);
-
-                      con.toDateCon.value.text = formattedDate;
-                    } else {}
-                  },
-                  controller: con.toDateCon.value,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                ),
-              ),
-              SizedBox(
-                height: 25.h,
-              ),
-              AppButton(
-                height: 30.h,
-                onPressed: () async {
-                  Get.back();
-                  await DesktopRepository()
-                      .getOrderHistoryFilterApiCall(
-                          isInitial: true, search: con.nameCon.value.text, fromdDate: con.fromDateCon.value.text, toDate: con.toDateCon.value.text)
-                      .then((value) => con.nameCon.value.clear());
+                    con.fromDateCon.value.text = formattedDate;
+                  } else {}
                 },
-                child: Text(
-                  "Search",
-                  style: TextStyle(color: AppColors.white, fontSize: 14.sp, fontWeight: FontWeight.w600),
-                ),
-              )
-            ],
-          )),
+                controller: con.fromDateCon.value,
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.next,
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            SizedBox(
+              height: 40.h,
+              child: AppTextField(
+                enabled: true,
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
+                hintText: "Enter Todate",
+                hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
+                suffixIcon: const Icon(Icons.timer),
+                suffixOnTap: () async {
+                  DateTime? pickedDate =
+                      await showDatePicker(context: Get.context!, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2101));
+
+                  if (pickedDate != null) {
+                    String formattedDate = DateFormat('yyyy-M-d').format(pickedDate);
+
+                    con.toDateCon.value.text = formattedDate;
+                  } else {}
+                },
+                controller: con.toDateCon.value,
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.next,
+              ),
+            ),
+            SizedBox(
+              height: 25.h,
+            ),
+            AppButton(
+              height: 30.h,
+              onPressed: () async {
+                Get.back();
+                await DesktopRepository()
+                    .getOrderHistoryFilterApiCall(
+                        isInitial: true, search: con.nameCon.value.text, fromdDate: con.fromDateCon.value.text, toDate: con.toDateCon.value.text)
+                    .then((value) => con.nameCon.value.clear());
+              },
+              child: Text(
+                "Search",
+                style: TextStyle(color: AppColors.white, fontSize: 14.sp, fontWeight: FontWeight.w600),
+              ),
+            )
+          ],
+        ),
+      ),
       // barrierColor: AppColors.blackColor,
       // shape: RoundedRectangleBorder(
       //     borderRadius: BorderRadius.circular(35),
